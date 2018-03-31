@@ -1,0 +1,214 @@
+rule "Hue - Quarto do Pedro"
+when
+    Channel "mihome:sensor_switch:158d00019de580:button" triggered
+then
+    var actionName = receivedEvent.getEvent()
+	var brightness = hue_quarto_pedro.state as DecimalType
+	var enableLightOnMotion = EnableLightOnMotion_QuartoPedro.state
+	
+    switch(actionName) {
+	
+        case "SHORT_PRESSED": {
+			var shouldTurnLightOn = (brightness == 0);
+			var shouldTurnLightOff = (brightness > 0) && (enableLightOnMotion == OFF);
+			var shouldDisableMotionControl = (brightness > 0) && (enableLightOnMotion == ON);
+			
+			if (shouldTurnLightOn)
+			{
+				sendCommand(hue_quarto_pedro, ON)
+				sendCommand(EnableLightOnMotion_QuartoPedro, OFF)
+			}
+			
+			if (shouldTurnLightOff)
+			{
+				sendCommand(hue_quarto_pedro, OFF)
+			}
+			
+			if (shouldDisableMotionControl)
+			{
+				sendCommand(EnableLightOnMotion_QuartoPedro, OFF)
+				
+				sendCommand(hue_quarto_pedro, 1)
+				Thread::sleep(200)
+				sendCommand(hue_quarto_pedro, brightness)
+			}
+        }
+		
+        case "DOUBLE_PRESSED": {
+			var shouldDisableMotionControl = (brightness == 0);
+			var shouldSetMaxBrightness = (brightness > 0);
+			
+			if (shouldDisableMotionControl)
+			{
+				sendCommand(hue_quarto_pedro, ON)
+				Thread::sleep(200)
+				sendCommand(hue_quarto_pedro, OFF)
+				
+				Thread::sleep(3000)
+				sendCommand(EnableLightOnMotion_QuartoPedro, OFF)
+			}
+			
+			if (shouldSetMaxBrightness)
+			{
+				hue_quarto_pedro.sendCommand(100);
+			}
+        }
+		
+        case "LONG_PRESSED": {
+			var newBrightness = brightness + 20;
+			
+			if (newBrightness > 100) {
+				newBrightness = 20;
+			}
+			
+			hue_quarto_pedro.sendCommand(newBrightness)
+        }
+		
+        case "LONG_RELEASED": {
+        }
+    }
+end
+
+
+rule "Hue - Sala de Jantar"
+when
+    Channel "mihome:sensor_switch:158d00019dcdda:button" triggered
+then
+    var actionName = receivedEvent.getEvent()
+	var brightness = hue_sala_jantar.state as DecimalType
+	var enableLightOnMotion = EnableLightOnMotion_SalaDeJantar.state
+	
+	switch(actionName) {
+	
+        case "SHORT_PRESSED": {
+			var shouldTurnLightOn = (brightness == 0);
+			var shouldTurnLightOff = (brightness > 0) && (enableLightOnMotion == OFF);
+			var shouldDisableMotionControl = (brightness > 0) && (enableLightOnMotion == ON);
+			
+			if (shouldTurnLightOn)
+			{
+				sendCommand(hue_sala_jantar, ON)
+				sendCommand(EnableLightOnMotion_SalaDeJantar, OFF)
+			}
+			
+			if (shouldTurnLightOff)
+			{
+				sendCommand(hue_sala_jantar, OFF)
+			}
+			
+			if (shouldDisableMotionControl)
+			{
+				sendCommand(EnableLightOnMotion_SalaDeJantar, OFF)
+				
+				sendCommand(hue_sala_jantar, 1)
+				Thread::sleep(200)
+				sendCommand(hue_sala_jantar, brightness)
+			}
+        }
+		
+        case "DOUBLE_PRESSED": {
+			var shouldDisableMotionControl = (brightness == 0);
+			var shouldSetMaxBrightness = (brightness > 0);
+			
+			if (shouldDisableMotionControl)
+			{
+				sendCommand(hue_sala_jantar, ON)
+				Thread::sleep(200)
+				sendCommand(hue_sala_jantar, OFF)
+				
+				Thread::sleep(3000)
+				sendCommand(EnableLightOnMotion_SalaDeJantar, OFF)
+			}
+			
+			if (shouldSetMaxBrightness)
+			{
+				hue_sala_jantar.sendCommand(100);
+			}
+        }
+		
+        case "LONG_PRESSED": {
+			var newBrightness = brightness + 20;
+			
+			if (newBrightness > 100) {
+				newBrightness = 20;
+			}
+			
+			hue_sala_jantar.sendCommand(newBrightness)
+        }
+		
+        case "LONG_RELEASED": {
+        }
+    }
+end
+
+
+rule "Hue - Sala de Estar"
+when
+    Channel "mihome:sensor_switch:158d00019dcc92:button" triggered
+then
+    var actionName = receivedEvent.getEvent()
+	var brightness = hue_sala_estar.state as DecimalType
+	var enableLightOnMotion = EnableLightOnMotion_SalaDeEstar.state
+	
+    switch(actionName) {
+	
+        case "SHORT_PRESSED": {
+			var shouldTurnLightOn = (brightness == 0);
+			var shouldTurnLightOff = (brightness > 0) && (enableLightOnMotion == OFF);
+			var shouldDisableMotionControl = (brightness > 0) && (enableLightOnMotion == ON);
+			
+			if (shouldTurnLightOn)
+			{
+				sendCommand(hue_sala_estar, ON)
+				sendCommand(EnableLightOnMotion_SalaDeEstar, OFF)
+			}
+			
+			if (shouldTurnLightOff)
+			{
+				sendCommand(hue_sala_estar, OFF)
+			}
+			
+			if (shouldDisableMotionControl)
+			{
+				sendCommand(EnableLightOnMotion_SalaDeEstar, OFF)
+				
+				sendCommand(hue_sala_estar, 1)
+				Thread::sleep(200)
+				sendCommand(hue_sala_estar, brightness)
+			}
+        }
+		
+        case "DOUBLE_PRESSED": {
+			var shouldDisableMotionControl = (brightness == 0);
+			var shouldSetMaxBrightness = (brightness > 0);
+			
+			if (shouldDisableMotionControl)
+			{
+				sendCommand(hue_sala_estar, ON)
+				Thread::sleep(200)
+				sendCommand(hue_sala_estar, OFF)
+				
+				Thread::sleep(3000)
+				sendCommand(EnableLightOnMotion_SalaDeEstar, OFF)
+			}
+			
+			if (shouldSetMaxBrightness)
+			{
+				hue_sala_estar.sendCommand(100);
+			}
+        }
+		
+        case "LONG_PRESSED": {
+			var newBrightness = brightness + 20;
+			
+			if (newBrightness > 100) {
+				newBrightness = 20;
+			}
+			
+			hue_sala_estar.sendCommand(newBrightness)
+        }
+		
+        case "LONG_RELEASED": {
+        }
+    }
+end

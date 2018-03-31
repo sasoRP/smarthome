@@ -1,0 +1,22 @@
+rule "Hue - Quarto do Pedro turned OFF"
+when
+    Item hue_quarto_pedro changed to 0
+then
+    sendCommand(EnableLightOnMotion_QuartoPedro, ON)
+end
+
+
+rule "Hue - Sala de Jantar turned OFF"
+when
+    Item hue_sala_jantar changed to 0
+then
+    sendCommand(EnableLightOnMotion_SalaDeJantar, ON)
+end
+
+
+rule "Hue - Sala de Estar turned OFF"
+when
+    Item hue_sala_estar changed to 0
+then
+    sendCommand(EnableLightOnMotion_SalaDeEstar, ON)
+end
