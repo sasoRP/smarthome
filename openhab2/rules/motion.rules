@@ -8,13 +8,13 @@ then
 	var illumination = motion_sensor_sala_jantar_illumination.state as DecimalType
 	
 	var shouldLightTurnOn =  (toggleLightOnMotion == ON) &&
-							 (hue_sala_jantar_brightness.state == 0) && 
+							 (hue_sala_jantar_switch == OFF) && 
 							 (motionState == ON) &&
 							 (illumination < 9)
 							 
 							 
 	var shouldLightTurnOff = (toggleLightOnMotion == ON) &&
-							 (hue_sala_jantar_brightness.state > 0) &&
+							 (hue_sala_jantar_switch == ON) &&
 							 (motionState == OFF)
 	
 	if (shouldLightTurnOn)
@@ -29,39 +29,6 @@ then
 end
 
 
-rule "Motion Sensor - Sala de Estar"
-when
-    Item motion_sensor_motion_sala_estar_motion changed or
-	Item motion_sensor_motion_sala_estar_illumination changed
-then
-	var toggleLightOnMotion = EnableLightOnMotion_SalaDeEstar.state
-    var motionState = motion_sensor_motion_sala_estar_motion.state
-	var illumination = motion_sensor_motion_sala_estar_illumination.state as DecimalType
-	
-	var shouldLightTurnOn =  (toggleLightOnMotion == ON) &&
-							 (hue_sala_estar_brightness.state == 0) && 
-							 (motionState == ON) &&
-							 (illumination < 9)
-							 
-							 
-	var shouldLightTurnOff = (toggleLightOnMotion == ON) &&
-							 (hue_sala_estar_brightness.state > 0) &&
-							 (motionState == OFF)
-	
-	if (shouldLightTurnOn)
-	{
-		sendCommand(hue_sala_estar_switch, ON)
-		logInfo("motion.rules", "hue_sala_estar_switch turned ON");
-	}
-	
-	if (shouldLightTurnOff)
-	{
-		sendCommand(hue_sala_estar_switch, OFF)
-		logInfo("motion.rules", "hue_sala_estar_switch turned OFF");
-	}
-end
-
-
 rule "Motion Sensor - Quarto do Pedro"
 when
     Item motion_sensor_quarto_pedro_motion changed or
@@ -72,13 +39,13 @@ then
 	var illumination = motion_sensor_quarto_pedro_illumination.state as DecimalType
 	
 	var shouldLightTurnOn =  (toggleLightOnMotion == ON) &&
-							 (hue_quarto_pedro_brightness.state == 0) && 
+							 (hue_quarto_pedro_switch == OFF) && 
 							 (motionState == ON) &&
 							 (illumination < 9)
 							 
 							 
 	var shouldLightTurnOff = (toggleLightOnMotion == ON) &&
-							 (hue_quarto_pedro_brightness.state > 0) &&
+							 (hue_quarto_pedro_switch == ON) &&
 							 (motionState == OFF)
 	
 	if (shouldLightTurnOn)
@@ -89,5 +56,36 @@ then
 	if (shouldLightTurnOff)
 	{
 		sendCommand(hue_quarto_pedro_switch, OFF)
+	}
+end
+
+
+rule "Motion Sensor - Sala de Estar"
+when
+    Item motion_sensor_sala_estar_motion changed or
+	Item motion_sensor_sala_estar_illumination changed
+then
+	var toggleLightOnMotion = EnableLightOnMotion_SalaDeEstar.state
+    var motionState = motion_sensor_sala_estar_motion.state
+	var illumination = motion_sensor_sala_estar_illumination.state as DecimalType
+	
+	var shouldLightTurnOn =  (toggleLightOnMotion == ON) &&
+							 (hue_sala_estar_switch == OFF) && 
+							 (motionState == ON) &&
+							 (illumination < 9)
+							 
+							 
+	var shouldLightTurnOff = (toggleLightOnMotion == ON) &&
+							 (hue_sala_estar_switch == ON) &&
+							 (motionState == OFF)
+	
+	if (shouldLightTurnOn)
+	{
+		sendCommand(hue_sala_estar_switch, ON)
+	}
+	
+	if (shouldLightTurnOff)
+	{
+		sendCommand(hue_sala_estar_switch, OFF)
 	}
 end
