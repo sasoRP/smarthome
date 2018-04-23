@@ -1,11 +1,11 @@
 rule "Movement Detected"
 when
-    Item mihome_sensor_motion_aq2_158d0001e07c52_motion changed to ON or
-	Item mihome_sensor_motion_sala_estar_motion changed to ON or
-	Item mihome_sensor_motion_quarto_pedro_motion changed to ON
+    Item motion_sensor_sala_jantar_motion changed to ON or
+	Item motion_sensor_sala_estar_motion changed to ON or
+	Item motion_sensor_quarto_pedro_motion changed to ON
 then
 	if (Motion_Alarm.state == ON)
 	{
-		sendBroadcastNotification("Movimento detectado!")
+		sendBroadcastNotification("Movimento detectado!");
 	}
 end

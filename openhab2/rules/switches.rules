@@ -3,65 +3,63 @@ when
     Channel "mihome:sensor_switch:158d00019de580:button" triggered
 then
     var actionName = receivedEvent.getEvent()
-	var brightness = hue_quarto_pedro.state as DecimalType
+	var lightState = hue_quarto_pedro_switch.state
+	var brightness = hue_quarto_pedro_brightness.state as DecimalType
 	var enableLightOnMotion = EnableLightOnMotion_QuartoPedro.state
 	
     switch(actionName) {
 	
         case "SHORT_PRESSED": {
-			var shouldTurnLightOn = (brightness == 0);
-			var shouldTurnLightOff = (brightness > 0) && (enableLightOnMotion == OFF);
-			var shouldDisableMotionControl = (brightness > 0) && (enableLightOnMotion == ON);
+			logInfo("switches.rules", "Short pressed switch_quarto_pedro");
+			
+			var shouldTurnLightOn = (lightState == OFF);
+			var shouldTurnLightOff = (lightState == ON) && (enableLightOnMotion == OFF);
+			var shouldDisableMotionControl = (lightState == ON) && (enableLightOnMotion == ON);
 			
 			if (shouldTurnLightOn)
 			{
-				sendCommand(hue_quarto_pedro, ON)
+				sendCommand(hue_quarto_pedro_switch, ON)
 				sendCommand(EnableLightOnMotion_QuartoPedro, OFF)
 			}
 			
 			if (shouldTurnLightOff)
 			{
-				sendCommand(hue_quarto_pedro, OFF)
+				sendCommand(hue_quarto_pedro_switch, OFF)
 			}
 			
 			if (shouldDisableMotionControl)
 			{
 				sendCommand(EnableLightOnMotion_QuartoPedro, OFF)
-				
-				sendCommand(hue_quarto_pedro, 1)
-				Thread::sleep(200)
-				sendCommand(hue_quarto_pedro, brightness)
 			}
         }
 		
         case "DOUBLE_PRESSED": {
-			var shouldDisableMotionControl = (brightness == 0);
-			var shouldSetMaxBrightness = (brightness > 0);
+			logInfo("switches.rules", "Double pressed switch_quarto_pedro");
+			
+			var shouldDisableMotionControl = (lightState == OFF);
+			var shouldSetMaxBrightness = (lightState == ON);
 			
 			if (shouldDisableMotionControl)
 			{
-				sendCommand(hue_quarto_pedro, ON)
-				Thread::sleep(200)
-				sendCommand(hue_quarto_pedro, OFF)
-				
-				Thread::sleep(3000)
 				sendCommand(EnableLightOnMotion_QuartoPedro, OFF)
 			}
 			
 			if (shouldSetMaxBrightness)
 			{
-				hue_quarto_pedro.sendCommand(100);
+				hue_quarto_pedro_brightness.sendCommand(100);
 			}
         }
 		
         case "LONG_PRESSED": {
+			logInfo("switches.rules", "Long pressed switch_quarto_pedro");
+			
 			var newBrightness = brightness + 20;
 			
 			if (newBrightness > 100) {
 				newBrightness = 20;
 			}
 			
-			hue_quarto_pedro.sendCommand(newBrightness)
+			hue_quarto_pedro_brightness.sendCommand(newBrightness)
         }
 		
         case "LONG_RELEASED": {
@@ -75,65 +73,63 @@ when
     Channel "mihome:sensor_switch:158d00019dcdda:button" triggered
 then
     var actionName = receivedEvent.getEvent()
-	var brightness = hue_sala_jantar.state as DecimalType
+	var brightness = hue_sala_jantar_brightness.state as DecimalType
+	var lightState = hue_sala_jantar_switch.state
 	var enableLightOnMotion = EnableLightOnMotion_SalaDeJantar.state
 	
 	switch(actionName) {
 	
         case "SHORT_PRESSED": {
-			var shouldTurnLightOn = (brightness == 0);
-			var shouldTurnLightOff = (brightness > 0) && (enableLightOnMotion == OFF);
-			var shouldDisableMotionControl = (brightness > 0) && (enableLightOnMotion == ON);
+			logInfo("switches.rules", "Short pressed switch_sala_jantar");
+		
+			var shouldTurnLightOn = (lightState == OFF);
+			var shouldTurnLightOff = (lightState == ON) && (enableLightOnMotion == OFF);
+			var shouldDisableMotionControl = (lightState == ON) && (enableLightOnMotion == ON);
 			
 			if (shouldTurnLightOn)
 			{
-				sendCommand(hue_sala_jantar, ON)
+				sendCommand(hue_sala_jantar_switch, ON)
 				sendCommand(EnableLightOnMotion_SalaDeJantar, OFF)
 			}
 			
 			if (shouldTurnLightOff)
 			{
-				sendCommand(hue_sala_jantar, OFF)
+				sendCommand(hue_sala_jantar_switch, OFF)
 			}
 			
 			if (shouldDisableMotionControl)
 			{
 				sendCommand(EnableLightOnMotion_SalaDeJantar, OFF)
-				
-				sendCommand(hue_sala_jantar, 1)
-				Thread::sleep(200)
-				sendCommand(hue_sala_jantar, brightness)
 			}
         }
 		
         case "DOUBLE_PRESSED": {
-			var shouldDisableMotionControl = (brightness == 0);
-			var shouldSetMaxBrightness = (brightness > 0);
+			logInfo("switches.rules", "Double pressed switch_sala_jantar");
+		
+			var shouldDisableMotionControl = (lightState == OFF);
+			var shouldSetMaxBrightness = (lightState == ON);
 			
 			if (shouldDisableMotionControl)
 			{
-				sendCommand(hue_sala_jantar, ON)
-				Thread::sleep(200)
-				sendCommand(hue_sala_jantar, OFF)
-				
-				Thread::sleep(3000)
 				sendCommand(EnableLightOnMotion_SalaDeJantar, OFF)
 			}
 			
 			if (shouldSetMaxBrightness)
 			{
-				hue_sala_jantar.sendCommand(100);
+				hue_sala_jantar_brightness.sendCommand(100);
 			}
         }
 		
         case "LONG_PRESSED": {
+			logInfo("switches.rules", "Long pressed switch_sala_jantar");
+		
 			var newBrightness = brightness + 20;
 			
 			if (newBrightness > 100) {
 				newBrightness = 20;
 			}
 			
-			hue_sala_jantar.sendCommand(newBrightness)
+			hue_sala_jantar_brightness.sendCommand(newBrightness)
         }
 		
         case "LONG_RELEASED": {
@@ -147,65 +143,63 @@ when
     Channel "mihome:sensor_switch:158d00019dcc92:button" triggered
 then
     var actionName = receivedEvent.getEvent()
-	var brightness = hue_sala_estar.state as DecimalType
+	var brightness = hue_sala_estar_brightness.state as DecimalType
+	var lightState = hue_sala_estar_switch.state
 	var enableLightOnMotion = EnableLightOnMotion_SalaDeEstar.state
 	
     switch(actionName) {
 	
         case "SHORT_PRESSED": {
-			var shouldTurnLightOn = (brightness == 0);
-			var shouldTurnLightOff = (brightness > 0) && (enableLightOnMotion == OFF);
-			var shouldDisableMotionControl = (brightness > 0) && (enableLightOnMotion == ON);
+			logInfo("switches.rules", "Short pressed switch_sala_estar");
+			
+			var shouldTurnLightOn = (lightState == OFF);
+			var shouldTurnLightOff = (lightState == ON) && (enableLightOnMotion == OFF);
+			var shouldDisableMotionControl = (lightState == ON) && (enableLightOnMotion == ON);
 			
 			if (shouldTurnLightOn)
 			{
-				sendCommand(hue_sala_estar, ON)
+				sendCommand(hue_sala_estar_switch, ON)
 				sendCommand(EnableLightOnMotion_SalaDeEstar, OFF)
 			}
 			
 			if (shouldTurnLightOff)
 			{
-				sendCommand(hue_sala_estar, OFF)
+				sendCommand(hue_sala_estar_switch, OFF)
 			}
 			
 			if (shouldDisableMotionControl)
 			{
 				sendCommand(EnableLightOnMotion_SalaDeEstar, OFF)
-				
-				sendCommand(hue_sala_estar, 1)
-				Thread::sleep(200)
-				sendCommand(hue_sala_estar, brightness)
 			}
         }
 		
         case "DOUBLE_PRESSED": {
-			var shouldDisableMotionControl = (brightness == 0);
-			var shouldSetMaxBrightness = (brightness > 0);
+			logInfo("switches.rules", "Double pressed switch_sala_estar");
+		
+			var shouldDisableMotionControl = (lightState == OFF);
+			var shouldSetMaxBrightness = (lightState == ON);
 			
 			if (shouldDisableMotionControl)
 			{
-				sendCommand(hue_sala_estar, ON)
-				Thread::sleep(200)
-				sendCommand(hue_sala_estar, OFF)
-				
-				Thread::sleep(3000)
 				sendCommand(EnableLightOnMotion_SalaDeEstar, OFF)
 			}
 			
 			if (shouldSetMaxBrightness)
 			{
-				hue_sala_estar.sendCommand(100);
+				hue_sala_estar_brightness.sendCommand(100);
 			}
         }
 		
         case "LONG_PRESSED": {
+			logInfo("switches.rules", "Long pressed switch_sala_estar");
+		
 			var newBrightness = brightness + 20;
 			
 			if (newBrightness > 100) {
 				newBrightness = 20;
 			}
 			
-			hue_sala_estar.sendCommand(newBrightness)
+			hue_sala_estar_brightness.sendCommand(newBrightness)
         }
 		
         case "LONG_RELEASED": {

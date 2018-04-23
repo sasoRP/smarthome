@@ -1,91 +1,93 @@
 rule "Motion Sensor - Sala de Jantar"
 when
-    Item mihome_sensor_motion_aq2_158d0001e07c52_motion changed or
-	Item mihome_sensor_motion_aq2_158d0001e07c52_illumination changed
+    Item motion_sensor_sala_jantar_motion changed or
+	Item motion_sensor_sala_jantar_illumination changed
 then
 	var toggleLightOnMotion = EnableLightOnMotion_SalaDeJantar.state
-    var motionState = mihome_sensor_motion_aq2_158d0001e07c52_motion.state
-	var illumination = mihome_sensor_motion_aq2_158d0001e07c52_illumination.state as DecimalType
+    var motionState = motion_sensor_sala_jantar_motion.state
+	var illumination = motion_sensor_sala_jantar_illumination.state as DecimalType
 	
 	var shouldLightTurnOn =  (toggleLightOnMotion == ON) &&
-							 (hue_sala_jantar.state == 0) && 
+							 (hue_sala_jantar_brightness.state == 0) && 
 							 (motionState == ON) &&
 							 (illumination < 9)
 							 
 							 
 	var shouldLightTurnOff = (toggleLightOnMotion == ON) &&
-							 (hue_sala_jantar.state > 0) &&
+							 (hue_sala_jantar_brightness.state > 0) &&
 							 (motionState == OFF)
 	
 	if (shouldLightTurnOn)
 	{
-		sendCommand(hue_sala_jantar, ON)
+		sendCommand(hue_sala_jantar_switch, ON)
 	}
 	
 	if (shouldLightTurnOff)
 	{
-		sendCommand(hue_sala_jantar, OFF)
+		sendCommand(hue_sala_jantar_switch, OFF)
 	}
 end
 
 
 rule "Motion Sensor - Sala de Estar"
 when
-    Item mihome_sensor_motion_sala_estar_motion changed or
-	Item mihome_sensor_motion_sala_estar_illumination changed
+    Item motion_sensor_motion_sala_estar_motion changed or
+	Item motion_sensor_motion_sala_estar_illumination changed
 then
 	var toggleLightOnMotion = EnableLightOnMotion_SalaDeEstar.state
-    var motionState = mihome_sensor_motion_sala_estar_motion.state
-	var illumination = mihome_sensor_motion_sala_estar_illumination.state as DecimalType
+    var motionState = motion_sensor_motion_sala_estar_motion.state
+	var illumination = motion_sensor_motion_sala_estar_illumination.state as DecimalType
 	
 	var shouldLightTurnOn =  (toggleLightOnMotion == ON) &&
-							 (hue_sala_estar.state == 0) && 
+							 (hue_sala_estar_brightness.state == 0) && 
 							 (motionState == ON) &&
 							 (illumination < 9)
 							 
 							 
 	var shouldLightTurnOff = (toggleLightOnMotion == ON) &&
-							 (hue_sala_estar.state > 0) &&
+							 (hue_sala_estar_brightness.state > 0) &&
 							 (motionState == OFF)
 	
 	if (shouldLightTurnOn)
 	{
-		sendCommand(hue_sala_estar, ON)
+		sendCommand(hue_sala_estar_switch, ON)
+		logInfo("motion.rules", "hue_sala_estar_switch turned ON");
 	}
 	
 	if (shouldLightTurnOff)
 	{
-		sendCommand(hue_sala_estar, OFF)
+		sendCommand(hue_sala_estar_switch, OFF)
+		logInfo("motion.rules", "hue_sala_estar_switch turned OFF");
 	}
 end
 
 
 rule "Motion Sensor - Quarto do Pedro"
 when
-    Item mihome_sensor_motion_quarto_pedro_motion changed or
-	Item mihome_sensor_motion_quarto_pedro_illumination changed
+    Item motion_sensor_quarto_pedro_motion changed or
+	Item motion_sensor_quarto_pedro_illumination changed
 then
 	var toggleLightOnMotion = EnableLightOnMotion_QuartoPedro.state
-    var motionState = mihome_sensor_motion_quarto_pedro_motion.state
-	var illumination = mihome_sensor_motion_quarto_pedro_illumination.state as DecimalType
+    var motionState = motion_sensor_quarto_pedro_motion.state
+	var illumination = motion_sensor_quarto_pedro_illumination.state as DecimalType
 	
 	var shouldLightTurnOn =  (toggleLightOnMotion == ON) &&
-							 (hue_quarto_pedro.state == 0) && 
+							 (hue_quarto_pedro_brightness.state == 0) && 
 							 (motionState == ON) &&
 							 (illumination < 9)
 							 
 							 
 	var shouldLightTurnOff = (toggleLightOnMotion == ON) &&
-							 (hue_quarto_pedro.state > 0) &&
+							 (hue_quarto_pedro_brightness.state > 0) &&
 							 (motionState == OFF)
 	
 	if (shouldLightTurnOn)
 	{
-		sendCommand(hue_quarto_pedro, ON)
+		sendCommand(hue_quarto_pedro_switch, ON)
 	}
 	
 	if (shouldLightTurnOff)
 	{
-		sendCommand(hue_quarto_pedro, OFF)
+		sendCommand(hue_quarto_pedro_switch, OFF)
 	}
 end
