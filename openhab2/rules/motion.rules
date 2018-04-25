@@ -3,6 +3,8 @@ when
     Item motion_sensor_sala_jantar_motion changed or
 	Item motion_sensor_sala_jantar_illumination changed
 then
+	logInfo("motion.rules", "movimento - sala de jantar.");
+	
 	var toggleLightOnMotion = EnableLightOnMotion_SalaDeJantar.state
     var motionState = motion_sensor_sala_jantar_motion.state
 	var illumination = motion_sensor_sala_jantar_illumination.state as DecimalType
@@ -34,6 +36,8 @@ when
     Item motion_sensor_quarto_pedro_motion changed or
 	Item motion_sensor_quarto_pedro_illumination changed
 then
+	logInfo("motion.rules", "movimento - quarto do Pedro.");
+
 	var toggleLightOnMotion = EnableLightOnMotion_QuartoPedro.state
     var motionState = motion_sensor_quarto_pedro_motion.state
 	var illumination = motion_sensor_quarto_pedro_illumination.state as DecimalType
@@ -65,7 +69,8 @@ when
     Item motion_sensor_sala_estar_motion changed or
 	Item motion_sensor_sala_estar_illumination changed
 then
-	logInfo("switches.rules", "hue_sala_estar_switch: " + hue_sala_estar_switch.state);
+	logInfo("motion.rules", "movimento - sala de Estar.");
+	
 	var toggleLightOnMotion = EnableLightOnMotion_SalaDeEstar.state
     var motionState = motion_sensor_sala_estar_motion.state
 	var illumination = motion_sensor_sala_estar_illumination.state as DecimalType
