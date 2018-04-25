@@ -3,6 +3,14 @@ when
     Item hue_quarto_pedro_switch changed to OFF
 then
     sendCommand(EnableLightOnMotion_QuartoPedro, ON)
+	logInfo("lights.rules", "luz OFF - quarto do Pedro");
+end
+
+rule "Hue - Quarto do Pedro turned ON"
+when
+    Item hue_quarto_pedro_switch changed to ON
+then
+    logInfo("lights.rules", "luz ON - quarto do Pedro");
 end
 
 
@@ -11,6 +19,14 @@ when
     Item hue_sala_jantar_switch changed to OFF
 then
     sendCommand(EnableLightOnMotion_SalaDeJantar, ON)
+	logInfo("lights.rules", "luz OFF - sala de jantar");
+end
+
+rule "Hue - Sala de Jantar turned ON"
+when
+    Item hue_sala_jantar_switch changed to ON
+then
+    logInfo("lights.rules", "luz ON - sala de jantar");
 end
 
 
@@ -19,4 +35,12 @@ when
     Item hue_sala_estar_switch changed to OFF
 then
     sendCommand(EnableLightOnMotion_SalaDeEstar, ON)
+	logInfo("lights.rules", "luz OFF - sala de estar");
+end
+
+rule "Hue - Sala de Estar turned ON"
+when
+    Item hue_sala_estar_switch changed to ON
+then
+    logInfo("lights.rules", "luz ON - sala de estar");
 end
