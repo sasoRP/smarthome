@@ -1,11 +1,31 @@
-rule "Movement Detected"
+rule "Movement Detected Sala de Jantar"
 when
-    Item motion_sensor_sala_jantar_motion changed to ON or
-	Item motion_sensor_sala_estar_motion changed to ON or
+    Item motion_sensor_sala_jantar_motion changed to ON
+then
+	if (Motion_Alarm.state == ON)
+	{
+		sendBroadcastNotification("Movimento detectado - Sala de Jantar!");
+	}
+end
+
+
+rule "Movement Detected Sala de Estar"
+when
+	Item motion_sensor_sala_estar_motion changed to ON
+then
+	if (Motion_Alarm.state == ON)
+	{
+		sendBroadcastNotification("Movimento detectado - Sala de Estar!");
+	}
+end
+
+
+rule "Movement Detected Quarto do Pedro"
+when
 	Item motion_sensor_quarto_pedro_motion changed to ON
 then
 	if (Motion_Alarm.state == ON)
 	{
-		sendBroadcastNotification("Movimento detectado!");
+		sendBroadcastNotification("Movimento detectado - Quarto do Pedro!");
 	}
 end
