@@ -1,23 +1,18 @@
-rule "Motion Sensor - Sala de Jantar"
-when
-    Item motion_sensor_sala_jantar_motion changed or
-	Item motion_sensor_sala_jantar_illumination changed
-then
-	logInfo("motion.rules", "movimento - sala de jantar.");
-	
-	var toggleLightOnMotion = EnableLightOnMotion_SalaDeJantar.state
-    var motionState = motion_sensor_sala_jantar_motion.state
-	var illumination = motion_sensor_sala_jantar_illumination.state as DecimalType
-	
-	var shouldLightTurnOn =  (toggleLightOnMotion == ON) &&
-							 (hue_sala_jantar_switch.state == OFF) && 
-							 (motionState == ON) &&
-							 (illumination < 9)
+val Functions$Function3<SwitchItem, SwitchItem, NumberItem, Void> adjustLightState =  [SwitchItem switchLightOnMotion, SwitchItem switchMotionState, NumberItem itemIluminationState |
+    
+	var shouldLightTurnOn =  (hue_sala_jantar_switch.state == OFF) &&
+							 (SunLight.state == OFF || itemIluminationState.state == 0) &&
+							 (switchLightOnMotion.state == ON) &&
+							 (switchMotionState.state == ON) &&
+							 (itemIluminationState.state < 9)
 							 
 							 
-	var shouldLightTurnOff = (toggleLightOnMotion == ON) &&
+	var shouldLightTurnOff = (switchLightOnMotion.state == ON) &&
 							 (hue_sala_jantar_switch.state == ON) &&
-							 (motionState == OFF)
+							 (switchMotionState.state == OFF)
+							 
+	logInfo("motion.rules", "shouldLightTurnOn: "  + shouldLightTurnOn);
+	logInfo("motion.rules", "shouldLightTurnOff: " + shouldLightTurnOff);
 	
 	if (shouldLightTurnOn)
 	{
@@ -28,6 +23,17 @@ then
 	{
 		sendCommand(hue_sala_jantar_switch, OFF)
 	}
+]
+
+
+rule "Motion Sensor - Sala de Jantar"
+when
+    Item motion_sensor_sala_jantar_motion changed or
+	Item motion_sensor_sala_jantar_illumination changed
+then
+	logInfo("motion.rules", "movimento - sala de jantar.");
+	
+	adjustLightState.apply(EnableLightOnMotion_SalaDeJantar, motion_sensor_sala_jantar_motion, motion_sensor_sala_jantar_illumination);
 end
 
 
@@ -37,30 +43,8 @@ when
 	Item motion_sensor_quarto_pedro_illumination changed
 then
 	logInfo("motion.rules", "movimento - quarto do Pedro.");
-
-	var toggleLightOnMotion = EnableLightOnMotion_QuartoPedro.state
-    var motionState = motion_sensor_quarto_pedro_motion.state
-	var illumination = motion_sensor_quarto_pedro_illumination.state as DecimalType
 	
-	var shouldLightTurnOn =  (toggleLightOnMotion == ON) &&
-							 (hue_quarto_pedro_switch.state == OFF) && 
-							 (motionState == ON) &&
-							 (illumination < 9)
-							 
-							 
-	var shouldLightTurnOff = (toggleLightOnMotion == ON) &&
-							 (hue_quarto_pedro_switch.state == ON) &&
-							 (motionState == OFF)
-	
-	if (shouldLightTurnOn)
-	{
-		sendCommand(hue_quarto_pedro_switch, ON)
-	}
-	
-	if (shouldLightTurnOff)
-	{
-		sendCommand(hue_quarto_pedro_switch, OFF)
-	}
+	adjustLightState.apply(EnableLightOnMotion_QuartoPedro, motion_sensor_quarto_pedro_motion, motion_sensor_quarto_pedro_illumination);
 end
 
 
@@ -71,27 +55,5 @@ when
 then
 	logInfo("motion.rules", "movimento - sala de Estar.");
 	
-	var toggleLightOnMotion = EnableLightOnMotion_SalaDeEstar.state
-    var motionState = motion_sensor_sala_estar_motion.state
-	var illumination = motion_sensor_sala_estar_illumination.state as DecimalType
-	
-	var shouldLightTurnOn =  (toggleLightOnMotion == ON) &&
-							 (hue_sala_estar_switch.state == OFF) && 
-							 (motionState == ON) &&
-							 (illumination < 9)
-							 
-							 
-	var shouldLightTurnOff = (toggleLightOnMotion == ON) &&
-							 (hue_sala_estar_switch.state == ON) &&
-							 (motionState == OFF)
-	
-	if (shouldLightTurnOn)
-	{
-		sendCommand(hue_sala_estar_switch, ON)
-	}
-	
-	if (shouldLightTurnOff)
-	{
-		sendCommand(hue_sala_estar_switch, OFF)
-	}
+	adjustLightState.apply(EnableLightOnMotion_SalaDeEstar, motion_sensor_sala_estar_motion, motion_sensor_sala_estar_illumination);
 end

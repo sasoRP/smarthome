@@ -1,0 +1,14 @@
+rule "Set SunLight state on sunrise."
+when
+    Channel 'astro:sun:home:rise#event' triggered START 
+then
+    SunLight.state = ON;
+end
+
+
+rule "Set SunLight state on sunset"
+when
+    Channel 'astro:sun:home:set#event' triggered START 
+then
+    SunLight.state = OFF;
+end

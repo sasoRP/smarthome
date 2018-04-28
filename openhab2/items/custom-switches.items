@@ -2,3 +2,4 @@ Switch Motion_Alarm "Motion Alarm" <switch>
 Switch EnableLightOnMotion_SalaDeEstar "Enable Light On Motion Sala de Estar" <switch>
 Switch EnableLightOnMotion_QuartoPedro "Enable Light On Motion Quarto do Pedro" <switch>
 Switch EnableLightOnMotion_SalaDeJantar "Enable Light On Motion Sala de Jantar" <switch>
+Switch SunLight "Is there sunlight?" <switch>
