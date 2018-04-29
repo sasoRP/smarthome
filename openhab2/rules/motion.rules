@@ -1,14 +1,14 @@
-val Functions$Function3<SwitchItem, SwitchItem, NumberItem, Void> adjustLightState =  [SwitchItem switchLightOnMotion, SwitchItem switchMotionState, NumberItem itemIluminationState |
+val Functions$Function4<SwitchItem, SwitchItem, SwitchItem, NumberItem, Void> adjustLightState =  [SwitchItem lightBulb, SwitchItem switchLightOnMotion, SwitchItem switchMotionState, NumberItem itemIluminationState |
     
-	var shouldLightTurnOn =  (hue_sala_jantar_switch.state == OFF) &&
-							 (SunLight.state == OFF || itemIluminationState.state == 0) &&
+	var shouldLightTurnOn =  (lightBulb.state == OFF) &&
+							 (SunLight.state == OFF) &&
 							 (switchLightOnMotion.state == ON) &&
 							 (switchMotionState.state == ON) &&
 							 (itemIluminationState.state < 9)
 							 
 							 
 	var shouldLightTurnOff = (switchLightOnMotion.state == ON) &&
-							 (hue_sala_jantar_switch.state == ON) &&
+							 (lightBulb.state == ON) &&
 							 (switchMotionState.state == OFF)
 							 
 	logInfo("motion.rules", "shouldLightTurnOn: "  + shouldLightTurnOn);
@@ -16,12 +16,12 @@ val Functions$Function3<SwitchItem, SwitchItem, NumberItem, Void> adjustLightSta
 	
 	if (shouldLightTurnOn)
 	{
-		sendCommand(hue_sala_jantar_switch, ON)
+		sendCommand(lightBulb, ON)
 	}
 	
 	if (shouldLightTurnOff)
 	{
-		sendCommand(hue_sala_jantar_switch, OFF)
+		sendCommand(lightBulb, OFF)
 	}
 ]
 
@@ -33,7 +33,7 @@ when
 then
 	logInfo("motion.rules", "movimento - sala de jantar.");
 	
-	adjustLightState.apply(EnableLightOnMotion_SalaDeJantar, motion_sensor_sala_jantar_motion, motion_sensor_sala_jantar_illumination);
+	adjustLightState.apply(hue_sala_jantar_switch, EnableLightOnMotion_SalaDeJantar, motion_sensor_sala_jantar_motion, motion_sensor_sala_jantar_illumination);
 end
 
 
@@ -44,7 +44,7 @@ when
 then
 	logInfo("motion.rules", "movimento - quarto do Pedro.");
 	
-	adjustLightState.apply(EnableLightOnMotion_QuartoPedro, motion_sensor_quarto_pedro_motion, motion_sensor_quarto_pedro_illumination);
+	adjustLightState.apply(hue_quarto_pedro_switch, EnableLightOnMotion_QuartoPedro, motion_sensor_quarto_pedro_motion, motion_sensor_quarto_pedro_illumination);
 end
 
 
@@ -55,5 +55,5 @@ when
 then
 	logInfo("motion.rules", "movimento - sala de Estar.");
 	
-	adjustLightState.apply(EnableLightOnMotion_SalaDeEstar, motion_sensor_sala_estar_motion, motion_sensor_sala_estar_illumination);
+	adjustLightState.apply(hue_sala_estar_switch, EnableLightOnMotion_SalaDeEstar, motion_sensor_sala_estar_motion, motion_sensor_sala_estar_illumination);
 end
