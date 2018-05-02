@@ -1,27 +1,47 @@
-val Functions$Function4<SwitchItem, SwitchItem, SwitchItem, NumberItem, Void> adjustLightState =  [SwitchItem lightBulb, SwitchItem switchLightOnMotion, SwitchItem switchMotionState, NumberItem itemIluminationState |
+val Functions$Function5<SwitchItem, DimmerItem, SwitchItem, SwitchItem, NumberItem, Void> adjustLightState =  [SwitchItem lightBulb, DimmerItem lightBulbDimmer, SwitchItem switchLightOnMotion, SwitchItem switchMotionState, NumberItem itemIluminationState |
     
+	logDebug("motion.rules", "lightBulb.state: " + lightBulb.state);
+	logDebug("motion.rules", "SunLight.state: " + SunLight.state);
+	logDebug("motion.rules", "switchLightOnMotion.state: " + switchLightOnMotion.state);
+	logDebug("motion.rules", "switchMotionState.state: " + switchMotionState.state);
+	logDebug("motion.rules", "itemIluminationState.state: " + itemIluminationState.state);
+	
 	var shouldLightTurnOn =  (lightBulb.state == OFF) &&
 							 (SunLight.state == OFF) &&
 							 (switchLightOnMotion.state == ON) &&
 							 (switchMotionState.state == ON) &&
 							 (itemIluminationState.state < 9)
-							 
+	
+	logDebug("motion.rules", "----------------");
+	logDebug("motion.rules", "shouldLightTurnOn: "  + shouldLightTurnOn);
 							 
 	var shouldLightTurnOff = (switchLightOnMotion.state == ON) &&
 							 (lightBulb.state == ON) &&
 							 (switchMotionState.state == OFF)
 							 
-	logDebug("motion.rules", "shouldLightTurnOn: "  + shouldLightTurnOn);
+	logDebug("motion.rules", "switchLightOnMotion.state: " + switchLightOnMotion.state);
+	logDebug("motion.rules", "lightBulb.state: " + lightBulb.state);
+	logDebug("motion.rules", "switchMotionState.state: " + switchMotionState.state);
+	logDebug("motion.rules", "----------------");
 	logDebug("motion.rules", "shouldLightTurnOff: " + shouldLightTurnOff);
 	
 	if (shouldLightTurnOn)
 	{
-		sendCommand(lightBulb, ON)
+		logInfo("motion.rules", "motion detected - turning light ON...");
+		sendCommand(lightBulb, ON);
 	}
 	
 	if (shouldLightTurnOff)
 	{
+		logInfo("motion.rules", "NO motion detected - turning light OFF...");
 		sendCommand(lightBulb, OFF)
+	}
+	else
+	{
+		if (lightBulbDimmer.state < 40)
+		{
+			sendCommand(lightBulbDimmer, 40);
+		}
 	}
 ]
 
@@ -35,13 +55,13 @@ then
 	
 	var DateTime maxTolerance = new DateTime(now.getYear(), now.getMonthOfYear(), now.getDayOfMonth(), 09, 30, 0) // create timer - today 9.30pm
 	
-	if(now.isBefore(maxTolerance) && now.isAfter(LocalSun_Rise_StartTime.state))
+	if(hue_sala_jantar_switch.state == OFF && now.isBefore(maxTolerance))
 	{
 		sendCommand(hue_sala_jantar_switch, ON)
 	}
 	else 
 	{
-		adjustLightState.apply(hue_sala_jantar_switch, EnableLightOnMotion_SalaDeJantar, motion_sensor_sala_jantar_motion, motion_sensor_sala_jantar_illumination);
+		adjustLightState.apply(hue_sala_jantar_switch, hue_sala_jantar_brightness, EnableLightOnMotion_SalaDeJantar, motion_sensor_sala_jantar_motion, motion_sensor_sala_jantar_illumination);
 	}
 end
 
@@ -53,7 +73,7 @@ when
 then
 	logDebug("motion.rules", "movimento - quarto do Pedro.");
 	
-	adjustLightState.apply(hue_quarto_pedro_switch, EnableLightOnMotion_QuartoPedro, motion_sensor_quarto_pedro_motion, motion_sensor_quarto_pedro_illumination);
+	adjustLightState.apply(hue_quarto_pedro_switch, hue_quarto_pedro_brightness, EnableLightOnMotion_QuartoPedro, motion_sensor_quarto_pedro_motion, motion_sensor_quarto_pedro_illumination);
 end
 
 
@@ -64,5 +84,5 @@ when
 then
 	logDebug("motion.rules", "movimento - sala de Estar.");
 	
-	adjustLightState.apply(hue_sala_estar_switch, EnableLightOnMotion_SalaDeEstar, motion_sensor_sala_estar_motion, motion_sensor_sala_estar_illumination);
+	adjustLightState.apply(hue_sala_estar_switch, hue_sala_estar_brightness, EnableLightOnMotion_SalaDeEstar, motion_sensor_sala_estar_motion, motion_sensor_sala_estar_illumination);
 end

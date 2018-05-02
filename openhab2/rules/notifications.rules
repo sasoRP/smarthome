@@ -1,0 +1,63 @@
+val Functions$Function2<String, String, Void> notifyStatusChange =  [String thingUID, String friendlyName |
+    
+	var thingStatusInfo = getThingStatusInfo(thingUID);
+	
+	if (thingStatusInfo !== null)
+	{
+		var thingStatus = thingStatusInfo.getStatus().toString();
+		var message = friendlyName + " changed its status to + " + thingStatus;
+		
+		logInfo("notification.rules", message);
+		sendBroadcastNotification(message);
+	}
+]
+
+
+rule "Luz Quarto do Pedro - Status changed"
+when
+	Thing "hue:0100:0017884b2cd5:1" changed
+then
+	notifyStatusChange.apply("hue:0100:0017884b2cd5:1", "Luz - Quarto do Pedro");
+end
+
+rule "Luz Quarto dos Pais - Status changed"
+when
+	Thing "hue:0100:0017884b2cd5:3" changed
+then
+	notifyStatusChange.apply("hue:0100:0017884b2cd5:3", "Luz - Quarto dos Pais");
+end
+
+rule "Luz Sala de Estar - Status changed"
+when
+	Thing "hue:0210:0017884b2cd5:4" changed
+then
+	notifyStatusChange.apply("hue:0210:0017884b2cd5:4", "Luz - Sala de Estar");
+end
+
+rule "Luz Sala de Jantar - Status changed"
+when
+	Thing "hue:0100:0017884b2cd5:2" changed
+then
+	notifyStatusChange.apply("hue:0100:0017884b2cd5:2", "Luz - Sala de Jantar");
+end
+
+rule "Motion Sensor - Quarto do Pedro - Status changed"
+when
+	Thing "mihome:sensor_motion_aq2:158d000222deee" changed
+then
+	notifyStatusChange.apply("mihome:sensor_motion_aq2:158d000222deee", "Motion Sensor - Quarto do Pedro");
+end
+
+rule "Motion Sensor - Sala de Estar - Status changed"
+when
+	Thing "mihome:sensor_motion_aq2:158d0001e50d81" changed
+then
+	notifyStatusChange.apply("mihome:sensor_motion_aq2:158d0001e50d81", "Motion Sensor - Sala de Estar");
+end
+
+rule "Motion Sensor - Sala de Jantar - Status changed"
+when
+	Thing "mihome:sensor_switch:158d00019dcdda" changed
+then
+	notifyStatusChange.apply("mihome:sensor_switch:158d00019dcdda", "Motion Sensor - Sala de Jantar");
+end
