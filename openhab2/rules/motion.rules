@@ -6,11 +6,16 @@ val Functions$Function5<SwitchItem, DimmerItem, SwitchItem, SwitchItem, NumberIt
 	logDebug("motion.rules", "switchMotionState.state: " + switchMotionState.state);
 	logDebug("motion.rules", "itemIluminationState.state: " + itemIluminationState.state);
 	
-	var shouldLightTurnOn =  (lightBulb.state == OFF) &&
-							 (SunLight.state == OFF) &&
-							 (switchLightOnMotion.state == ON) &&
-							 (switchMotionState.state == ON) &&
-							 (itemIluminationState.state < 9)
+	var canLightTurnOn = (lightBulb.state == OFF) &&
+						 (switchLightOnMotion.state == ON) &&
+						 (switchMotionState.state == ON) &&
+						 (itemIluminationState.state < 9);
+	
+	var isDarkness = (itemIluminationState.state == 0);
+	var isAfterSunSet = (SunLight.state == OFF);
+	
+	var shouldLightTurnOn =  (canLightTurnOn && isDarkness) || 
+							 (canLightTurnOn && isAfterSunSet);
 	
 	logDebug("motion.rules", "----------------");
 	logDebug("motion.rules", "shouldLightTurnOn: "  + shouldLightTurnOn);
@@ -36,13 +41,6 @@ val Functions$Function5<SwitchItem, DimmerItem, SwitchItem, SwitchItem, NumberIt
 		logInfo("motion.rules", "NO motion detected - turning light OFF...");
 		sendCommand(lightBulb, OFF)
 	}
-	else
-	{
-		if (lightBulbDimmer.state < 40)
-		{
-			sendCommand(lightBulbDimmer, 40);
-		}
-	}
 ]
 
 
@@ -53,16 +51,7 @@ when
 then
 	logDebug("motion.rules", "movimento - sala de jantar.");
 	
-	var DateTime maxTolerance = new DateTime(now.getYear(), now.getMonthOfYear(), now.getDayOfMonth(), 09, 30, 0) // create timer - today 9.30pm
-	
-	if(hue_sala_jantar_switch.state == OFF && now.isBefore(maxTolerance))
-	{
-		sendCommand(hue_sala_jantar_switch, ON)
-	}
-	else 
-	{
-		adjustLightState.apply(hue_sala_jantar_switch, hue_sala_jantar_brightness, EnableLightOnMotion_SalaDeJantar, motion_sensor_sala_jantar_motion, motion_sensor_sala_jantar_illumination);
-	}
+	adjustLightState.apply(hue_sala_jantar_switch, hue_sala_jantar_brightness, EnableLightOnMotion_SalaDeJantar, motion_sensor_sala_jantar_motion, motion_sensor_sala_jantar_illumination);
 end
 
 

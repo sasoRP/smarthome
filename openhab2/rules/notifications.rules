@@ -8,7 +8,6 @@ val Functions$Function2<String, String, Void> notifyStatusChange =  [String thin
 		var message = friendlyName + " changed its status to + " + thingStatus;
 		
 		logInfo("notification.rules", message);
-		sendBroadcastNotification(message);
 	}
 ]
 
