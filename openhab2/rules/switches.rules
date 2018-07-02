@@ -1,37 +1,82 @@
-val Functions$Function2<SwitchItem, SwitchItem, Void> handleShortPress =  [SwitchItem lightBulbSwitch, SwitchItem toggleLightOnMotion |
-	
-	logDebug("switches.rules", "lightBulbSwitch.state: " + lightBulbSwitch.state);
-	logDebug("switches.rules", "toggleLightOnMotion.state: " + toggleLightOnMotion.state);
+val Functions$Function1<SwitchItem, Boolean> shouldTurnLightOn =  [SwitchItem lightBulbSwitch |
 	
 	var shouldTurnLightOn = (lightBulbSwitch.state == OFF);
 	
+	return shouldTurnLightOn;
+]
+
+val Functions$Function1<SwitchItem, Boolean> shouldTurnLightOff =  [SwitchItem lightBulbSwitch, SwitchItem toggleLightOnMotion |
+	
 	var shouldTurnLightOff = (lightBulbSwitch.state == ON) && 
 							 (toggleLightOnMotion.state == OFF);
-							 
+	
+	return shouldTurnLightOff;
+]
+
+val Functions$Function1<SwitchItem, Boolean> shouldDisableMotionControl =  [SwitchItem lightBulbSwitch, SwitchItem toggleLightOnMotion |
+	
 	var shouldDisableMotionControl = (lightBulbSwitch.state == ON) && 
 									 (toggleLightOnMotion.state == ON);
-									 
-	logDebug("switches.rules", "shouldTurnLightOn: " + shouldTurnLightOn);
-	logDebug("switches.rules", "shouldTurnLightOff: " + shouldTurnLightOff);
-	logDebug("switches.rules", "shouldDisableMotionControl: " + shouldDisableMotionControl);
 	
-	if (shouldTurnLightOn)
+	return shouldDisableMotionControl;
+]
+
+val Functions$Function0<Void> handleQuartoPedroShortPress =  [ |
+
+	if (shouldTurnLightOn(hue_quarto_pedro_switch))
 	{
-		sendCommand(lightBulbSwitch, ON)
-		sendCommand(toggleLightOnMotion, OFF)
+		sendCommand(hue_quarto_pedro_switch, ON);
+		sendCommand(EnableLightOnMotion_QuartoPedro, OFF);
 	}
 	
-	if (shouldTurnLightOff)
+	if (shouldTurnLightOff(hue_quarto_pedro_switch, EnableLightOnMotion_QuartoPedro))
 	{
-		sendCommand(lightBulbSwitch, OFF)
+		sendCommand(hue_quarto_pedro_switch, OFF);
 	}
 	
-	if (shouldDisableMotionControl)
+	if (shouldDisableMotionControl(hue_quarto_pedro_switch, EnableLightOnMotion_QuartoPedro))
 	{
-		sendCommand(toggleLightOnMotion, OFF)
+		sendCommand(EnableLightOnMotion_QuartoPedro, OFF);
 	}
 ]
 
+val Functions$Function0<Void> handleSalaDeEstarShortPress =  [ |
+
+	if (shouldTurnLightOn(hue_sala_estar_switch))
+	{
+		sendCommand(hue_sala_estar_switch, ON)
+		sendCommand(EnableLightOnMotion_SalaDeEstar, OFF)
+	}
+	
+	if (shouldTurnLightOff(hue_sala_estar_switch, EnableLightOnMotion_SalaDeEstar))
+	{
+		sendCommand(hue_sala_estar_switch, OFF)
+	}
+	
+	if (shouldDisableMotionControl(hue_sala_estar_switch, EnableLightOnMotion_SalaDeEstar))
+	{
+		sendCommand(EnableLightOnMotion_SalaDeEstar, OFF)
+	}
+]
+
+val Functions$Function0<Void> handleSalaDeJantarShortPress =  [ |
+
+	if (shouldTurnLightOn(hue_sala_jantar_switch))
+	{
+		sendCommand(hue_sala_jantar_switch, ON)
+		sendCommand(EnableLightOnMotion_SalaDeJantar, OFF)
+	}
+	
+	if (shouldTurnLightOff(hue_sala_jantar_switch, EnableLightOnMotion_SalaDeJantar))
+	{
+		sendCommand(hue_sala_jantar_switch, OFF)
+	}
+	
+	if (shouldDisableMotionControl(hue_sala_jantar_switch, EnableLightOnMotion_SalaDeJantar))
+	{
+		sendCommand(EnableLightOnMotion_SalaDeJantar, OFF)
+	}
+]
 
 val Functions$Function4<SwitchItem, DimmerItem, StringItem, SwitchItem, Void> handleDoublePress =  [SwitchItem lightBulbSwitch, DimmerItem lightBulbDimmer, StringItem lightBulbAlert, SwitchItem toggleLightOnMotion |
 			
@@ -73,7 +118,7 @@ then
 	
         case "SHORT_PRESSED": {
 			logInfo("switches.rules", "Short pressed switch_quarto_pedro");
-			handleShortPress.apply(hue_quarto_pedro_switch, EnableLightOnMotion_QuartoPedro);
+			handleQuartoPedroShortPress.apply();
         }
 		
         case "DOUBLE_PRESSED": {
@@ -102,7 +147,7 @@ then
 	
         case "SHORT_PRESSED": {
 			logInfo("switches.rules", "Short pressed switch_sala_jantar");
-			handleShortPress.apply(hue_sala_jantar_switch, EnableLightOnMotion_SalaDeJantar);
+			handleSalaDeJantarShortPress.apply();
         }
 		
         case "DOUBLE_PRESSED": {
@@ -131,7 +176,7 @@ then
 	
         case "SHORT_PRESSED": {
 			logInfo("switches.rules", "Short pressed switch_sala_estar");
-			handleShortPress.apply(hue_sala_estar_switch, EnableLightOnMotion_SalaDeEstar);
+			handleSalaDeEstarShortPress.apply();
         }
 		
         case "DOUBLE_PRESSED": {

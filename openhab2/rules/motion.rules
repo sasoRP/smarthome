@@ -1,10 +1,4 @@
-val Functions$Function5<SwitchItem, DimmerItem, SwitchItem, SwitchItem, NumberItem, Void> adjustLightState =  [SwitchItem lightBulb, DimmerItem lightBulbDimmer, SwitchItem switchLightOnMotion, SwitchItem switchMotionState, NumberItem itemIluminationState |
-    
-	logDebug("motion.rules", "lightBulb.state: " + lightBulb.state);
-	logDebug("motion.rules", "SunLight.state: " + SunLight.state);
-	logDebug("motion.rules", "switchLightOnMotion.state: " + switchLightOnMotion.state);
-	logDebug("motion.rules", "switchMotionState.state: " + switchMotionState.state);
-	logDebug("motion.rules", "itemIluminationState.state: " + itemIluminationState.state);
+val Functions$Function5<SwitchItem, SwitchItem, SwitchItem, NumberItem, Boolean> shouldLightTurnOn =  [SwitchItem lightBulb, SwitchItem switchLightOnMotion, SwitchItem switchMotionState, NumberItem itemIluminationState |	
 	
 	var canLightTurnOn = (lightBulb.state == OFF) &&
 						 (switchLightOnMotion.state == ON) &&
@@ -16,31 +10,18 @@ val Functions$Function5<SwitchItem, DimmerItem, SwitchItem, SwitchItem, NumberIt
 	
 	var shouldLightTurnOn =  (canLightTurnOn && isDarkness) || 
 							 (canLightTurnOn && isAfterSunSet);
-	
-	logDebug("motion.rules", "----------------");
-	logDebug("motion.rules", "shouldLightTurnOn: "  + shouldLightTurnOn);
+							 
+	return shouldLightTurnOn;
+]
+
+
+val Functions$Function5<SwitchItem, SwitchItem, SwitchItem, Boolean> shouldLightTurnOff =  [SwitchItem lightBulb, SwitchItem switchLightOnMotion, SwitchItem switchMotionState |
 							 
 	var shouldLightTurnOff = (switchLightOnMotion.state == ON) &&
 							 (lightBulb.state == ON) &&
-							 (switchMotionState.state == OFF)
-							 
-	logDebug("motion.rules", "switchLightOnMotion.state: " + switchLightOnMotion.state);
-	logDebug("motion.rules", "lightBulb.state: " + lightBulb.state);
-	logDebug("motion.rules", "switchMotionState.state: " + switchMotionState.state);
-	logDebug("motion.rules", "----------------");
-	logDebug("motion.rules", "shouldLightTurnOff: " + shouldLightTurnOff);
+							 (switchMotionState.state == OFF);
 	
-	if (shouldLightTurnOn)
-	{
-		logInfo("motion.rules", "motion detected - turning light ON...");
-		sendCommand(lightBulb, ON);
-	}
-	
-	if (shouldLightTurnOff)
-	{
-		logInfo("motion.rules", "NO motion detected - turning light OFF...");
-		sendCommand(lightBulb, OFF)
-	}
+	return shouldLightTurnOff;
 ]
 
 
@@ -51,7 +32,21 @@ when
 then
 	logDebug("motion.rules", "movimento - sala de jantar.");
 	
-	adjustLightState.apply(hue_sala_jantar_switch, hue_sala_jantar_brightness, EnableLightOnMotion_SalaDeJantar, motion_sensor_sala_jantar_motion, motion_sensor_sala_jantar_illumination);
+	var turnLightOn = shouldLightTurnOn(");
+	var turnLightOff = shouldLightTurnOff();
+	
+	var turnLightOn = shouldLightTurnOn(hue_sala_jantar_switch, EnableLightOnMotion_SalaDeJantar, motion_sensor_sala_jantar_motion, motion_sensor_sala_jantar_illumination);
+	var turnLightOff = shouldLightTurnOff(hue_sala_jantar_switch, EnableLightOnMotion_SalaDeJantar, motion_sensor_sala_jantar_motion);
+	
+	if (turnLightOn)
+	{
+		sendCommand(hue_sala_jantar_switch, ON);
+	}
+
+	if (turnLightOff)
+	{
+		sendCommand(hue_sala_jantar_switch, OFF);
+	}
 end
 
 
@@ -62,7 +57,18 @@ when
 then
 	logDebug("motion.rules", "movimento - quarto do Pedro.");
 	
-	adjustLightState.apply(hue_quarto_pedro_switch, hue_quarto_pedro_brightness, EnableLightOnMotion_QuartoPedro, motion_sensor_quarto_pedro_motion, motion_sensor_quarto_pedro_illumination);
+	var turnLightOn = shouldLightTurnOn(hue_quarto_pedro_switch, EnableLightOnMotion_QuartoPedro, motion_sensor_quarto_pedro_motion, motion_sensor_quarto_pedro_illumination);
+	var turnLightOff = shouldLightTurnOff(hue_quarto_pedro_switch, EnableLightOnMotion_QuartoPedro, motion_sensor_quarto_pedro_motion);
+	
+	if (turnLightOn)
+	{
+		sendCommand(hue_quarto_pedro_switch, ON);
+	}
+
+	if (turnLightOff)
+	{
+		sendCommand(hue_quarto_pedro_switch, OFF);
+	}
 end
 
 
@@ -73,5 +79,16 @@ when
 then
 	logDebug("motion.rules", "movimento - sala de Estar.");
 	
-	adjustLightState.apply(hue_sala_estar_switch, hue_sala_estar_brightness, EnableLightOnMotion_SalaDeEstar, motion_sensor_sala_estar_motion, motion_sensor_sala_estar_illumination);
+	var turnLightOn = shouldLightTurnOn(hue_sala_estar_switch, EnableLightOnMotion_SalaDeEstar, motion_sensor_sala_estar_motion, motion_sensor_sala_estar_illumination);
+	var turnLightOff = shouldLightTurnOff(hue_sala_estar_switch, EnableLightOnMotion_SalaDeEstar, motion_sensor_sala_estar_motion);
+	
+	if (turnLightOn)
+	{
+		sendCommand(hue_sala_estar_switch, ON);
+	}
+
+	if (turnLightOff)
+	{
+		sendCommand(hue_sala_estar_switch, OFF);
+	}
 end

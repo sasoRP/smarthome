@@ -1,0 +1,8 @@
+rule "Init"
+when
+	System started
+then
+	motion_sensor_sala_estar_motionOffTimer.sendCommand(70);
+	motion_sensor_quarto_pedro_motionOffTimer.sendCommand(70);
+	motion_sensor_sala_jantar_motionOffTimer.sendCommand(70);
+end
