@@ -1,0 +1,25 @@
+rule "Enable Automatic Mode for Lights on Week Days"
+when
+    Time cron "0 0 8 ? * MON-FRI *"
+then
+	sendCommand(EnableLightOnMotion_QuartoPedro, ON);
+	sendCommand(EnableLightOnMotion_SalaDeEstar, ON);
+	sendCommand(EnableLightOnMotion_SalaDeJantar, ON);
+end
+
+
+rule "Enable Automatic Mode for Lights on Weekend"
+when
+    Time cron "0 0 8 ? * SAT-SUN *"
+then
+	sendCommand(EnableLightOnMotion_SalaDeEstar, ON);
+	sendCommand(EnableLightOnMotion_SalaDeJantar, ON);
+end
+
+
+rule "Enable Automatic Mode for Lights on Weekend"
+when
+    Time cron "0 0 12 ? * SAT-SUN *"
+then
+	sendCommand(EnableLightOnMotion_QuartoPedro, ON);
+end

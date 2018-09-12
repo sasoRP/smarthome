@@ -32,6 +32,11 @@ val Functions$Function0<Void> handleQuartoPedroShortPress =  [ |
 	if (shouldTurnLightOff(hue_quarto_pedro_switch, EnableLightOnMotion_QuartoPedro))
 	{
 		sendCommand(hue_quarto_pedro_switch, OFF);
+		
+		if (now.getHourOfDay > 1 && now.getHourOfDay < 8)
+		{
+			sendCommand(EnableLightOnMotion_QuartoPedro, OFF);
+		}
 	}
 	
 	if (shouldDisableMotionControl(hue_quarto_pedro_switch, EnableLightOnMotion_QuartoPedro))

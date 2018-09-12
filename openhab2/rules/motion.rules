@@ -41,6 +41,11 @@ then
 	if (turnLightOn)
 	{
 		sendCommand(hue_sala_jantar_switch, ON);
+		
+		if ((hue_sala_jantar_brightness.state as DecimalType) < 100)
+		{
+			hue_sala_jantar_brightness.sendCommand(100);
+		}
 	}
 
 	if (turnLightOff)
@@ -63,6 +68,11 @@ then
 	if (turnLightOn)
 	{
 		sendCommand(hue_quarto_pedro_switch, ON);
+		
+		if ((hue_quarto_pedro_brightness.state as DecimalType) < 35)
+		{
+			hue_quarto_pedro_brightness.sendCommand(35);
+		}
 	}
 
 	if (turnLightOff)
@@ -85,6 +95,11 @@ then
 	if (turnLightOn)
 	{
 		sendCommand(hue_sala_estar_switch, ON);
+		
+		if ((hue_sala_estar_brightness.state as DecimalType) < 100)
+		{
+			hue_sala_estar_brightness.sendCommand(100);
+		}
 	}
 
 	if (turnLightOff)
