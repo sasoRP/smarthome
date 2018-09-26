@@ -1,6 +1,6 @@
 rule "Enable Automatic Mode for Lights on Week Days"
 when
-    Time cron "0 0 8 ? * MON-FRI *"
+    Time cron "0 40 8 ? * MON-FRI *"
 then
 	sendCommand(EnableLightOnMotion_QuartoPedro, ON);
 	sendCommand(EnableLightOnMotion_SalaDeEstar, ON);

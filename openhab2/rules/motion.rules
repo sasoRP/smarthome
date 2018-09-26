@@ -1,4 +1,4 @@
-val Functions$Function5<SwitchItem, SwitchItem, SwitchItem, NumberItem, Boolean> shouldLightTurnOn =  [SwitchItem lightBulb, SwitchItem switchLightOnMotion, SwitchItem switchMotionState, NumberItem itemIluminationState |	
+val Functions$Function4<SwitchItem, SwitchItem, SwitchItem, NumberItem, Boolean> shouldLightTurnOn =  [SwitchItem lightBulb, SwitchItem switchLightOnMotion, SwitchItem switchMotionState, NumberItem itemIluminationState |	
 	
 	var canLightTurnOn = (lightBulb.state == OFF) &&
 						 (switchLightOnMotion.state == ON) &&
@@ -15,7 +15,7 @@ val Functions$Function5<SwitchItem, SwitchItem, SwitchItem, NumberItem, Boolean>
 ]
 
 
-val Functions$Function5<SwitchItem, SwitchItem, SwitchItem, Boolean> shouldLightTurnOff =  [SwitchItem lightBulb, SwitchItem switchLightOnMotion, SwitchItem switchMotionState |
+val Functions$Function3<SwitchItem, SwitchItem, SwitchItem, Boolean> shouldLightTurnOff =  [SwitchItem lightBulb, SwitchItem switchLightOnMotion, SwitchItem switchMotionState |
 							 
 	var shouldLightTurnOff = (switchLightOnMotion.state == ON) &&
 							 (lightBulb.state == ON) &&
@@ -32,11 +32,8 @@ when
 then
 	logDebug("motion.rules", "movimento - sala de jantar.");
 	
-	var turnLightOn = shouldLightTurnOn(");
-	var turnLightOff = shouldLightTurnOff();
-	
-	var turnLightOn = shouldLightTurnOn(hue_sala_jantar_switch, EnableLightOnMotion_SalaDeJantar, motion_sensor_sala_jantar_motion, motion_sensor_sala_jantar_illumination);
-	var turnLightOff = shouldLightTurnOff(hue_sala_jantar_switch, EnableLightOnMotion_SalaDeJantar, motion_sensor_sala_jantar_motion);
+	var turnLightOn = shouldLightTurnOn.apply(hue_sala_jantar_switch, EnableLightOnMotion_SalaDeJantar, motion_sensor_sala_jantar_motion, motion_sensor_sala_jantar_illumination);
+	var turnLightOff = shouldLightTurnOff.apply(hue_sala_jantar_switch, EnableLightOnMotion_SalaDeJantar, motion_sensor_sala_jantar_motion);
 	
 	if (turnLightOn)
 	{
@@ -62,8 +59,8 @@ when
 then
 	logDebug("motion.rules", "movimento - quarto do Pedro.");
 	
-	var turnLightOn = shouldLightTurnOn(hue_quarto_pedro_switch, EnableLightOnMotion_QuartoPedro, motion_sensor_quarto_pedro_motion, motion_sensor_quarto_pedro_illumination);
-	var turnLightOff = shouldLightTurnOff(hue_quarto_pedro_switch, EnableLightOnMotion_QuartoPedro, motion_sensor_quarto_pedro_motion);
+	var turnLightOn = shouldLightTurnOn.apply(hue_quarto_pedro_switch, EnableLightOnMotion_QuartoPedro, motion_sensor_quarto_pedro_motion, motion_sensor_quarto_pedro_illumination);
+	var turnLightOff = shouldLightTurnOff.apply(hue_quarto_pedro_switch, EnableLightOnMotion_QuartoPedro, motion_sensor_quarto_pedro_motion);
 	
 	if (turnLightOn)
 	{
@@ -89,8 +86,8 @@ when
 then
 	logDebug("motion.rules", "movimento - sala de Estar.");
 	
-	var turnLightOn = shouldLightTurnOn(hue_sala_estar_switch, EnableLightOnMotion_SalaDeEstar, motion_sensor_sala_estar_motion, motion_sensor_sala_estar_illumination);
-	var turnLightOff = shouldLightTurnOff(hue_sala_estar_switch, EnableLightOnMotion_SalaDeEstar, motion_sensor_sala_estar_motion);
+	var turnLightOn = shouldLightTurnOn.apply(hue_sala_estar_switch, EnableLightOnMotion_SalaDeEstar, motion_sensor_sala_estar_motion, motion_sensor_sala_estar_illumination);
+	var turnLightOff = shouldLightTurnOff.apply(hue_sala_estar_switch, EnableLightOnMotion_SalaDeEstar, motion_sensor_sala_estar_motion);
 	
 	if (turnLightOn)
 	{
