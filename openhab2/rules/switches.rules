@@ -1,90 +1,26 @@
-val Functions$Function1<SwitchItem, Boolean> shouldTurnLightOn =  [SwitchItem lightBulbSwitch |
+val Functions$Function2<SwitchItem, SwitchItem, Void> handleShortPress =  [ SwitchItem lightBulbSwitch, SwitchItem toggleLightOnMotion |
+	logInfo("switches.rules", "handleShortPress()");
 	
-	var shouldTurnLightOn = (lightBulbSwitch.state == OFF);
-	
-	return shouldTurnLightOn;
-]
-
-val Functions$Function1<SwitchItem, Boolean> shouldTurnLightOff =  [SwitchItem lightBulbSwitch, SwitchItem toggleLightOnMotion |
-	
-	var shouldTurnLightOff = (lightBulbSwitch.state == ON) && 
-							 (toggleLightOnMotion.state == OFF);
-	
-	return shouldTurnLightOff;
-]
-
-val Functions$Function1<SwitchItem, Boolean> shouldDisableMotionControl =  [SwitchItem lightBulbSwitch, SwitchItem toggleLightOnMotion |
-	
-	var shouldDisableMotionControl = (lightBulbSwitch.state == ON) && 
-									 (toggleLightOnMotion.state == ON);
-	
-	return shouldDisableMotionControl;
-]
-
-val Functions$Function0<Void> handleQuartoPedroShortPress =  [ |
-
-	if (shouldTurnLightOn(hue_quarto_pedro_switch))
+	if (lightBulbSwitch.state == OFF)
 	{
-		sendCommand(hue_quarto_pedro_switch, ON);
-		sendCommand(EnableLightOnMotion_QuartoPedro, OFF);
+		sendCommand(lightBulbSwitch, ON);
+		sendCommand(toggleLightOnMotion, OFF);
 	}
 	
-	if (shouldTurnLightOff(hue_quarto_pedro_switch, EnableLightOnMotion_QuartoPedro))
+	if ((lightBulbSwitch.state == ON) && (toggleLightOnMotion.state == OFF))
 	{
-		sendCommand(hue_quarto_pedro_switch, OFF);
-		
-		if (now.getHourOfDay > 1 && now.getHourOfDay < 8)
-		{
-			sendCommand(EnableLightOnMotion_QuartoPedro, OFF);
-		}
+		sendCommand(lightBulbSwitch, OFF);
 	}
 	
-	if (shouldDisableMotionControl(hue_quarto_pedro_switch, EnableLightOnMotion_QuartoPedro))
+	if ((lightBulbSwitch.state == ON) && (toggleLightOnMotion.state == ON))
 	{
-		sendCommand(EnableLightOnMotion_QuartoPedro, OFF);
-	}
-]
-
-val Functions$Function0<Void> handleSalaDeEstarShortPress =  [ |
-
-	if (shouldTurnLightOn(hue_sala_estar_switch))
-	{
-		sendCommand(hue_sala_estar_switch, ON)
-		sendCommand(EnableLightOnMotion_SalaDeEstar, OFF)
-	}
-	
-	if (shouldTurnLightOff(hue_sala_estar_switch, EnableLightOnMotion_SalaDeEstar))
-	{
-		sendCommand(hue_sala_estar_switch, OFF)
-	}
-	
-	if (shouldDisableMotionControl(hue_sala_estar_switch, EnableLightOnMotion_SalaDeEstar))
-	{
-		sendCommand(EnableLightOnMotion_SalaDeEstar, OFF)
-	}
-]
-
-val Functions$Function0<Void> handleSalaDeJantarShortPress =  [ |
-
-	if (shouldTurnLightOn(hue_sala_jantar_switch))
-	{
-		sendCommand(hue_sala_jantar_switch, ON)
-		sendCommand(EnableLightOnMotion_SalaDeJantar, OFF)
-	}
-	
-	if (shouldTurnLightOff(hue_sala_jantar_switch, EnableLightOnMotion_SalaDeJantar))
-	{
-		sendCommand(hue_sala_jantar_switch, OFF)
-	}
-	
-	if (shouldDisableMotionControl(hue_sala_jantar_switch, EnableLightOnMotion_SalaDeJantar))
-	{
-		sendCommand(EnableLightOnMotion_SalaDeJantar, OFF)
+		sendCommand(toggleLightOnMotion, OFF);
 	}
 ]
 
 val Functions$Function4<SwitchItem, DimmerItem, StringItem, SwitchItem, Void> handleDoublePress =  [SwitchItem lightBulbSwitch, DimmerItem lightBulbDimmer, StringItem lightBulbAlert, SwitchItem toggleLightOnMotion |
-			
+	logInfo("switches.rules", "handleDoublePress()");
+
 	var shouldDisableMotionControl = (lightBulbSwitch.state == OFF);
 	var shouldSetMaxBrightness = (lightBulbSwitch.state == ON);
 	
@@ -101,6 +37,7 @@ val Functions$Function4<SwitchItem, DimmerItem, StringItem, SwitchItem, Void> ha
 ]
 
 val Functions$Function1<DimmerItem, Void> handleLongPress =  [DimmerItem lightBulbDimmer |
+	logInfo("switches.rules", "handleLongPress()");
 
 	var newBrightness = (lightBulbDimmer.state as DecimalType) + 20;
 			
@@ -123,7 +60,14 @@ then
 	
         case "SHORT_PRESSED": {
 			logInfo("switches.rules", "Short pressed switch_quarto_pedro");
-			handleQuartoPedroShortPress.apply();
+			
+			handleShortPress.apply(hue_quarto_pedro_switch, EnableLightOnMotion_QuartoPedro);
+			
+			if (now.getHourOfDay > 1 && now.getHourOfDay < 8 && hue_quarto_pedro_switch.state == OFF)
+			{
+				sendCommand(EnableLightOnMotion_QuartoPedro, OFF);
+				logInfo("switches.rules", "disabling light automatic mode, as it's night time.");
+			}
         }
 		
         case "DOUBLE_PRESSED": {
@@ -152,7 +96,7 @@ then
 	
         case "SHORT_PRESSED": {
 			logInfo("switches.rules", "Short pressed switch_sala_jantar");
-			handleSalaDeJantarShortPress.apply();
+			handleShortPress.apply(hue_sala_jantar_switch, EnableLightOnMotion_SalaDeJantar);
         }
 		
         case "DOUBLE_PRESSED": {
@@ -181,7 +125,7 @@ then
 	
         case "SHORT_PRESSED": {
 			logInfo("switches.rules", "Short pressed switch_sala_estar");
-			handleSalaDeEstarShortPress.apply();
+			handleSalaDeEstarShortPress.apply(hue_sala_estar_switch, EnableLightOnMotion_SalaDeEstar);
         }
 		
         case "DOUBLE_PRESSED": {
