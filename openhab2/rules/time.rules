@@ -1,10 +1,11 @@
 rule "Enable Automatic Mode for Lights on Week Days"
 when
-    Time cron "0 40 8 ? * MON-FRI *"
+    Time cron "0 35 8 ? * MON-FRI *"
 then
 	sendCommand(EnableLightOnMotion_QuartoPedro, ON);
 	sendCommand(EnableLightOnMotion_SalaDeEstar, ON);
 	sendCommand(EnableLightOnMotion_SalaDeJantar, ON);
+	logInfo("time.rules", "Automatic mode - all lights ON.");
 end
 
 
@@ -14,12 +15,14 @@ when
 then
 	sendCommand(EnableLightOnMotion_SalaDeEstar, ON);
 	sendCommand(EnableLightOnMotion_SalaDeJantar, ON);
+	logInfo("time.rules", "Automatic mode - salas ON.");
 end
 
 
-rule "Enable Automatic Mode for Lights on Weekend"
+rule "Enable Automatic Mode for Lights later on Weekend"
 when
     Time cron "0 0 12 ? * SAT-SUN *"
 then
+	logInfo("time.rules", "Automatic mode - quarto do pedro ON.");
 	sendCommand(EnableLightOnMotion_QuartoPedro, ON);
 end

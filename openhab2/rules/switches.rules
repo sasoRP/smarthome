@@ -1,20 +1,25 @@
-val Functions$Function2<SwitchItem, SwitchItem, Void> handleShortPress =  [ SwitchItem lightBulbSwitch, SwitchItem toggleLightOnMotion |
+val Functions$Function3<SwitchItem, SwitchItem, StringItem, Void> handleShortPress =  [ SwitchItem lightBulbSwitch, SwitchItem toggleLightOnMotion, StringItem lightBulbAlert |
 	logInfo("switches.rules", "handleShortPress()");
 	
 	if (lightBulbSwitch.state == OFF)
 	{
+		logInfo("switches.rules", "turning light ON...");
 		sendCommand(lightBulbSwitch, ON);
 		sendCommand(toggleLightOnMotion, OFF);
 	}
-	
-	if ((lightBulbSwitch.state == ON) && (toggleLightOnMotion.state == OFF))
+	else
 	{
-		sendCommand(lightBulbSwitch, OFF);
-	}
-	
-	if ((lightBulbSwitch.state == ON) && (toggleLightOnMotion.state == ON))
-	{
-		sendCommand(toggleLightOnMotion, OFF);
+		if (toggleLightOnMotion.state == OFF)
+		{
+			logInfo("switches.rules", "turning light OFF...");
+			sendCommand(lightBulbSwitch, OFF);
+		}
+		else
+		{
+			logInfo("switches.rules", "disabling automatic mode...");
+			sendCommand(toggleLightOnMotion, OFF);
+			sendCommand(lightBulbAlert, "SELECT");
+		}
 	}
 ]
 
@@ -61,7 +66,7 @@ then
         case "SHORT_PRESSED": {
 			logInfo("switches.rules", "Short pressed switch_quarto_pedro");
 			
-			handleShortPress.apply(hue_quarto_pedro_switch, EnableLightOnMotion_QuartoPedro);
+			handleShortPress.apply(hue_quarto_pedro_switch, EnableLightOnMotion_QuartoPedro, hue_quarto_pedro_alert);
 			
 			if (now.getHourOfDay > 1 && now.getHourOfDay < 8 && hue_quarto_pedro_switch.state == OFF)
 			{
@@ -96,7 +101,7 @@ then
 	
         case "SHORT_PRESSED": {
 			logInfo("switches.rules", "Short pressed switch_sala_jantar");
-			handleShortPress.apply(hue_sala_jantar_switch, EnableLightOnMotion_SalaDeJantar);
+			handleShortPress.apply(hue_sala_jantar_switch, EnableLightOnMotion_SalaDeJantar, hue_sala_jantar_alert);
         }
 		
         case "DOUBLE_PRESSED": {
@@ -125,7 +130,7 @@ then
 	
         case "SHORT_PRESSED": {
 			logInfo("switches.rules", "Short pressed switch_sala_estar");
-			handleSalaDeEstarShortPress.apply(hue_sala_estar_switch, EnableLightOnMotion_SalaDeEstar);
+			handleShortPress.apply(hue_sala_estar_switch, EnableLightOnMotion_SalaDeEstar, hue_sala_estar_alert);
         }
 		
         case "DOUBLE_PRESSED": {
