@@ -5,4 +5,16 @@ then
 	motion_sensor_sala_estar_motionOffTimer.sendCommand(90);
 	motion_sensor_quarto_pedro_motionOffTimer.sendCommand(90);
 	motion_sensor_sala_jantar_motionOffTimer.sendCommand(90);
+	
+	var sunSetStart = new DateTime(astro_sun_set_start.state.toString);
+	var sunRiseStart = new DateTime(astro_sun_rise_start.state.toString);
+	
+	if (now.isAfter(sunSetStart) && now.isBefore(sunRiseStart))
+	{
+		sendCommand(SunLight, ON);
+	}
+	else
+	{
+		sendCommand(SunLight, OFF);
+	}
 end

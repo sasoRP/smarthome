@@ -1,17 +1,25 @@
-val Functions$Function4<SwitchItem, SwitchItem, SwitchItem, NumberItem, Boolean> shouldLightTurnOn =  [SwitchItem lightBulb, SwitchItem switchLightOnMotion, SwitchItem switchMotionState, NumberItem itemIluminationState |	
+val Functions$Function3<SwitchItem, SwitchItem, SwitchItem, Boolean> shouldLightTurnOn =  [SwitchItem lightBulb, SwitchItem switchLightOnMotion, SwitchItem switchMotionState |	
 	
 	var canLightTurnOn = (lightBulb.state == OFF) &&
 						 (switchLightOnMotion.state == ON) &&
-						 (switchMotionState.state == ON) &&
-						 (itemIluminationState.state < 9);
-	
-	var isDarkness = (itemIluminationState.state == 0);
+						 (switchMotionState.state == ON);
+
 	var isAfterSunSet = (SunLight.state == OFF);
 	
-	var shouldLightTurnOn =  (canLightTurnOn && isDarkness) || 
-							 (canLightTurnOn && isAfterSunSet);
+	logDebug("motion.rules", "canLightTurnOn: " + canLightTurnOn + ".");
+	
+	var result = canLightTurnOn && isAfterSunSet;
 							 
-	return shouldLightTurnOn;
+    if (result)
+	{
+		logDebug("motion.rules", "light should turn ON");
+	}
+	else
+	{
+		logDebug("motion.rules", "light should NOT turn ON");
+	}
+	
+	return result;
 ]
 
 
@@ -20,6 +28,15 @@ val Functions$Function3<SwitchItem, SwitchItem, SwitchItem, Boolean> shouldLight
 	var shouldLightTurnOff = (switchLightOnMotion.state == ON) &&
 							 (lightBulb.state == ON) &&
 							 (switchMotionState.state == OFF);
+	
+	if (shouldLightTurnOff)
+	{
+		logDebug("motion.rules", "light should turn OFF");
+	}
+	else
+	{
+		logDebug("motion.rules", "light should NOT turn OFF");
+	}
 	
 	return shouldLightTurnOff;
 ]
@@ -30,23 +47,35 @@ when
     Item motion_sensor_sala_jantar_motion changed or
 	Item motion_sensor_sala_jantar_illumination changed
 then
-	logInfo("motion.rules", "movimento - sala de jantar.");
+	logDebug("motion.rules", "movimento/iluminação - sala de jantar.");
+
+	var turnLightOn = false;
 	
-	var turnLightOn = shouldLightTurnOn.apply(hue_sala_jantar_switch, EnableLightOnMotion_SalaDeJantar, motion_sensor_sala_jantar_motion, motion_sensor_sala_jantar_illumination);
-	var turnLightOff = shouldLightTurnOff.apply(hue_sala_jantar_switch, EnableLightOnMotion_SalaDeJantar, motion_sensor_sala_jantar_motion);
+	if (motion_sensor_sala_jantar_illumination.state > 8) {
+		turnLightOn = false;
+		logDebug("motion.rules", "Sala de Jantar illumination needs no lights.");
+	} else {
+		turnLightOn = shouldLightTurnOn.apply(hue_sala_jantar_switch, EnableLightOnMotion_SalaDeJantar, motion_sensor_sala_jantar_motion);
+	}
 	
 	if (turnLightOn)
 	{
+		logDebug("motion.rules", "sending ON command to Hue - Sala de Jantar");
 		sendCommand(hue_sala_jantar_switch, ON);
 		
 		if ((hue_sala_jantar_brightness.state as DecimalType) < 100)
 		{
 			hue_sala_jantar_brightness.sendCommand(100);
 		}
+	} else {
+		logDebug("motion.rules", "Sala de Jantar light will NOT turn ON.");
 	}
 
+	var turnLightOff = shouldLightTurnOff.apply(hue_sala_jantar_switch, EnableLightOnMotion_SalaDeJantar, motion_sensor_sala_jantar_motion);
+	
 	if (turnLightOff)
 	{
+		logDebug("motion.rules", "sending OFF command to Hue - Sala de Jantar");
 		sendCommand(hue_sala_jantar_switch, OFF);
 	}
 end
@@ -57,23 +86,38 @@ when
     Item motion_sensor_quarto_pedro_motion changed or
 	Item motion_sensor_quarto_pedro_illumination changed
 then
-	logInfo("motion.rules", "movimento - quarto do Pedro.");
+	logDebug("motion.rules", "movimento/iluminação - quarto do Pedro.");
 	
-	var turnLightOn = shouldLightTurnOn.apply(hue_quarto_pedro_switch, EnableLightOnMotion_QuartoPedro, motion_sensor_quarto_pedro_motion, motion_sensor_quarto_pedro_illumination);
-	var turnLightOff = shouldLightTurnOff.apply(hue_quarto_pedro_switch, EnableLightOnMotion_QuartoPedro, motion_sensor_quarto_pedro_motion);
+	var turnLightOn = false;
+	
+	if (motion_sensor_quarto_pedro_illumination.state > 21) {
+		turnLightOn = false;
+		logDebug("motion.rules", "Quarto do Pedro illumination needs no lights.");
+	} else {
+		logDebug("motion.rules", "Quarto do Pedro illumination needs lights ON.");
+		turnLightOn = shouldLightTurnOn.apply(hue_quarto_pedro_switch, EnableLightOnMotion_QuartoPedro, motion_sensor_quarto_pedro_motion);
+	}
+	
+	logDebug("motion.rules", "turnLightOn " + turnLightOn + ".");
 	
 	if (turnLightOn)
 	{
+		logDebug("motion.rules", "sending ON command to Hue - Quarto do Pedro");
 		sendCommand(hue_quarto_pedro_switch, ON);
 		
 		if ((hue_quarto_pedro_brightness.state as DecimalType) < 40)
 		{
 			hue_quarto_pedro_brightness.sendCommand(40);
 		}
+	} else {
+		logDebug("motion.rules", "Quarto do Pedro light will NOT turn ON.");
 	}
 
+	var turnLightOff = shouldLightTurnOff.apply(hue_quarto_pedro_switch, EnableLightOnMotion_QuartoPedro, motion_sensor_quarto_pedro_motion);
+	
 	if (turnLightOff)
 	{
+		logDebug("motion.rules", "sending OFF command to Hue - Quarto do Pedro");
 		sendCommand(hue_quarto_pedro_switch, OFF);
 	}
 end
@@ -84,23 +128,35 @@ when
     Item motion_sensor_sala_estar_motion changed or
 	Item motion_sensor_sala_estar_illumination changed
 then
-	logInfo("motion.rules", "movimento - sala de Estar.");
+	logDebug("motion.rules", "movimento/iluminação - sala de Estar.");
 	
-	var turnLightOn = shouldLightTurnOn.apply(hue_sala_estar_switch, EnableLightOnMotion_SalaDeEstar, motion_sensor_sala_estar_motion, motion_sensor_sala_estar_illumination);
-	var turnLightOff = shouldLightTurnOff.apply(hue_sala_estar_switch, EnableLightOnMotion_SalaDeEstar, motion_sensor_sala_estar_motion);
+	var turnLightOn = false;
+	
+	if (motion_sensor_sala_estar_illumination.state > 8) {
+		turnLightOn = false;
+		logDebug("motion.rules", "Sala de Estar illumination needs no lights.");
+	} else {
+		turnLightOn = shouldLightTurnOn.apply(hue_sala_estar_switch, EnableLightOnMotion_SalaDeEstar, motion_sensor_sala_estar_motion);
+	}
 	
 	if (turnLightOn)
 	{
+		logDebug("motion.rules", "sending ON command to Hue - Sala de Estar");
 		sendCommand(hue_sala_estar_switch, ON);
 		
 		if ((hue_sala_estar_brightness.state as DecimalType) < 100)
 		{
 			hue_sala_estar_brightness.sendCommand(100);
 		}
+	} else {
+		logDebug("motion.rules", "Sala de Estar light will NOT turn ON.");
 	}
+	
+	var turnLightOff = shouldLightTurnOff.apply(hue_sala_estar_switch, EnableLightOnMotion_SalaDeEstar, motion_sensor_sala_estar_motion);
 
 	if (turnLightOff)
 	{
+		logDebug("motion.rules", "sending OFF command to Hue - Sala de Estar");
 		sendCommand(hue_sala_estar_switch, OFF);
 	}
 end

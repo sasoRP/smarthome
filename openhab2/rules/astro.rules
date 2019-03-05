@@ -2,7 +2,7 @@ rule "Set SunLight state on sunrise."
 when
     Channel 'astro:sun:local:rise#event' triggered START 
 then
-	logInfo("astro.rules", "Sunrise event.");
+	logDebug("astro.rules", "Sunrise event.");
 	sendCommand(SunLight, ON);
 end
 
@@ -11,6 +11,6 @@ rule "Set SunLight state on sunset"
 when
     Channel 'astro:sun:local:set#event' triggered START 
 then
-	logInfo("astro.rules", "Sunset event.");
+	logDebug("astro.rules", "Sunset event.");
     sendCommand(SunLight, OFF);
 end
