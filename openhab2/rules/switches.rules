@@ -154,3 +154,32 @@ then
         }
     }
 end
+
+
+rule "Hue - Quarto Pequeno"
+when
+    Channel "mihome:sensor_switch_aq2:158d00012402f6:button" triggered
+then
+    var actionName = receivedEvent.getEvent()
+	
+    switch(actionName) {
+	
+        case "SHORT_PRESSED": {
+			logDebug("switches.rules", "Short pressed switch_quarto_pequeno");
+			handleShortPress.apply(hue_quarto_pequeno_switch, EnableLightOnMotion_QuartoPequeno, hue_quarto_pequeno_alert, true);
+        }
+		
+        case "DOUBLE_PRESSED": {
+			logDebug("switches.rules", "Double pressed switch_quarto_pedro");
+			handleDoublePress.apply(hue_quarto_pequeno_switch, hue_quarto_pequeno_brightness, hue_quarto_pequeno_alert, EnableLightOnMotion_QuartoPequeno);
+        }
+		
+        case "LONG_PRESSED": {
+			logDebug("switches.rules", "Long pressed switch_quarto_pequeno");
+			handleLongPress.apply(hue_quarto_pequeno_brightness);
+        }
+		
+        case "LONG_RELEASED": {
+        }
+    }
+end

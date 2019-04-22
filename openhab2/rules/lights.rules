@@ -6,6 +6,13 @@ then
 end
 
 
+rule "Hue - Sala de Jantar turned ON"
+when
+    Item hue_sala_jantar_switch changed to ON
+then
+    logDebug("lights.rules", "luz ON - sala de jantar");
+end
+
 rule "Hue - Sala de Jantar turned OFF"
 when
     Item hue_sala_jantar_switch changed to OFF
@@ -14,13 +21,13 @@ then
 	logDebug("lights.rules", "luz OFF - sala de jantar");
 end
 
-rule "Hue - Sala de Jantar turned ON"
-when
-    Item hue_sala_jantar_switch changed to ON
-then
-    logDebug("lights.rules", "luz ON - sala de jantar");
-end
 
+rule "Hue - Sala de Estar turned ON"
+when
+    Item hue_sala_estar_switch changed to ON
+then
+    logDebug("lights.rules", "luz ON - sala de estar");
+end
 
 rule "Hue - Sala de Estar turned OFF"
 when
@@ -30,9 +37,18 @@ then
 	logDebug("lights.rules", "luz OFF - sala de estar");
 end
 
-rule "Hue - Sala de Estar turned ON"
+
+rule "Hue - Quarto Pequeno turned ON"
 when
-    Item hue_sala_estar_switch changed to ON
+    Item hue_quarto_pequeno_switch changed to ON
 then
-    logDebug("lights.rules", "luz ON - sala de estar");
+    logDebug("lights.rules", "luz ON - quarto pequeno");
+end
+
+rule "Hue - Quarto Pequeno turned OFF"
+when
+    Item hue_quarto_pequeno_switch changed to OFF
+then
+    sendCommand(EnableLightOnMotion_QuartoPequeno, ON)
+	logDebug("lights.rules", "luz OFF - quarto pequeno");
 end

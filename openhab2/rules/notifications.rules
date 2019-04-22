@@ -7,7 +7,7 @@ val Functions$Function2<String, String, Void> notifyStatusChange =  [String thin
 		var thingStatus = thingStatusInfo.getStatus().toString();
 		var message = friendlyName + " changed its status to + " + thingStatus;
 		
-		logInfo("notification.rules", message);
+		logDebug("notification.rules", message);
 	}
 ]
 

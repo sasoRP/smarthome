@@ -51,9 +51,9 @@ then
 
 	var turnLightOn = false;
 	
-	if (motion_sensor_sala_jantar_illumination.state > 8) {
+	if (motion_sensor_sala_jantar_illumination.state > 40) {
 		turnLightOn = false;
-		logDebug("motion.rules", "Sala de Jantar illumination needs no lights.");
+		logInfo("motion.rules", "Sala de Jantar illumination needs no lights.");
 	} else {
 		turnLightOn = shouldLightTurnOn.apply(hue_sala_jantar_switch, EnableLightOnMotion_SalaDeJantar, motion_sensor_sala_jantar_motion);
 	}
@@ -90,9 +90,9 @@ then
 	
 	var turnLightOn = false;
 	
-	if (motion_sensor_quarto_pedro_illumination.state > 21) {
+	if (motion_sensor_quarto_pedro_illumination.state > 40) {
 		turnLightOn = false;
-		logDebug("motion.rules", "Quarto do Pedro illumination needs no lights.");
+		logInfo("motion.rules", "Quarto do Pedro illumination needs no lights.");
 	} else {
 		logDebug("motion.rules", "Quarto do Pedro illumination needs lights ON.");
 		turnLightOn = shouldLightTurnOn.apply(hue_quarto_pedro_switch, EnableLightOnMotion_QuartoPedro, motion_sensor_quarto_pedro_motion);
@@ -123,6 +123,39 @@ then
 end
 
 
+rule "Motion Sensor - Quarto Pequeno"
+when
+    Item motion_sensor_quarto_pequeno_motion changed or
+	Item motion_sensor_quarto_pequeno_illumination changed
+then
+	logDebug("motion.rules", "movimento/iluminação - quarto pequeno.");
+	
+	var turnLightOn = shouldLightTurnOn.apply(hue_quarto_pequeno_switch, EnableLightOnMotion_QuartoPequeno, motion_sensor_quarto_pequeno_motion);
+	
+	if (turnLightOn)
+	{
+		logDebug("motion.rules", "sending ON command to Hue - Quarto Pequeno");
+		sendCommand(hue_quarto_pequeno_switch, ON);
+		
+		if ((hue_quarto_pequeno_brightness.state as DecimalType) < 100)
+		{
+			hue_quarto_pequeno_brightness.sendCommand(100);
+		}
+	} else {
+		logDebug("motion.rules", "Quarto Pequeno light will NOT turn ON.");
+	}
+
+	var turnLightOff = shouldLightTurnOff.apply(hue_quarto_pequeno_switch, EnableLightOnMotion_QuartoPequeno, motion_sensor_quarto_pequeno_motion);
+	
+	if (turnLightOff)
+	{
+		logDebug("motion.rules", "sending OFF command to Hue - Quarto do Pequeno");
+		sendCommand(hue_quarto_pequeno_switch, OFF);
+	}
+end
+
+
+
 rule "Motion Sensor - Sala de Estar"
 when
     Item motion_sensor_sala_estar_motion changed or
@@ -132,9 +165,9 @@ then
 	
 	var turnLightOn = false;
 	
-	if (motion_sensor_sala_estar_illumination.state > 8) {
+	if (motion_sensor_sala_estar_illumination.state > 40) {
 		turnLightOn = false;
-		logDebug("motion.rules", "Sala de Estar illumination needs no lights.");
+		logInfo("motion.rules", "Sala de Estar illumination needs no lights.");
 	} else {
 		turnLightOn = shouldLightTurnOn.apply(hue_sala_estar_switch, EnableLightOnMotion_SalaDeEstar, motion_sensor_sala_estar_motion);
 	}

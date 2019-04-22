@@ -5,6 +5,7 @@ then
 	sendCommand(EnableLightOnMotion_QuartoPedro, ON);
 	sendCommand(EnableLightOnMotion_SalaDeEstar, ON);
 	sendCommand(EnableLightOnMotion_SalaDeJantar, ON);
+	sendCommand(EnableLightOnMotion_QuartoPequeno, ON);
 	logDebug("time.rules", "Automatic mode - all lights ON.");
 end
 
@@ -15,6 +16,7 @@ when
 then
 	sendCommand(EnableLightOnMotion_SalaDeEstar, ON);
 	sendCommand(EnableLightOnMotion_SalaDeJantar, ON);
+	sendCommand(EnableLightOnMotion_QuartoPequeno, ON);
 	logDebug("time.rules", "Automatic mode - salas ON.");
 end
 
