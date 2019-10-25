@@ -1,4 +1,4 @@
-val Functions$Function4<SwitchItem, SwitchItem, StringItem, Void> handleShortPress =  [ SwitchItem lightBulbSwitch, SwitchItem toggleLightOnMotion, StringItem lightBulbAlert, boolean enableToggleOnLightOff |
+val Functions$Function4<SwitchItem, SwitchItem, StringItem, Boolean, Void> handleShortPress =  [ SwitchItem lightBulbSwitch, SwitchItem toggleLightOnMotion, StringItem lightBulbAlert, Boolean enableToggleOnLightOff |
 	logDebug("switches.rules", "handleShortPress()");
 	
 	if (lightBulbSwitch.state == OFF)

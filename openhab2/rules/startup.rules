@@ -18,4 +18,9 @@ then
 	{
 		sendCommand(SunLight, OFF);
 	}
+	
+	sendCommand(EnableLightOnMotion_QuartoPedro, ON);
+	sendCommand(EnableLightOnMotion_SalaDeJantar, ON);
+	sendCommand(EnableLightOnMotion_SalaDeEstar, ON);
+	sendCommand(EnableLightOnMotion_QuartoPequeno, ON);
 end

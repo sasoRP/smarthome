@@ -1,6 +1,12 @@
-Switch Motion_Alarm "Motion Alarm" <switch>
-Switch EnableLightOnMotion_SalaDeEstar "Enable Light On Motion Sala de Estar" <switch>
-Switch EnableLightOnMotion_QuartoPedro "Enable Light On Motion Quarto do Pedro" <switch>
-Switch EnableLightOnMotion_SalaDeJantar "Enable Light On Motion Sala de Jantar" <switch>
-Switch EnableLightOnMotion_QuartoPequeno "Enable Light On Motion Quarto Pequeno" <switch>
-Switch SunLight "Is there sunlight?" <switch>
+Switch Motion_Alarm "Alarme de casa" <switch> [ "Switchable" ]
+
+Switch EnableLightOnMotion_SalaDeEstar "Detector de Movimento da sala de estar" <switch> [ "Switchable" ]
+Switch EnableLightOnMotion_QuartoPedro "Detector de Movimento do quarto do Pedro" <switch> [ "Switchable" ]
+Switch EnableLightOnMotion_SalaDeJantar "Detector de Movimento do sala de jantar" <switch> [ "Switchable" ]
+Switch EnableLightOnMotion_QuartoPequeno "Detector de Movimento do quarto pequeno" <switch> [ "Switchable" ]
+
+Switch SunLight "Luz solar" <switch> [ "Switchable" ]
+
+Number Temperatura_Cozinha "Temperatura da Cozinha" [ "CurrentTemperature" ]
+Number Temperatura_QuartoDosPais "Temperatura do quarto dos pais" [ "CurrentTemperature" ]
+Number Temperatura_SalaDeJantar "Temperatura da sala de jantar" [ "CurrentTemperature" ]
