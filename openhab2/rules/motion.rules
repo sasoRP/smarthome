@@ -47,7 +47,7 @@ when
     Item motion_sensor_sala_jantar_motion changed or
 	Item motion_sensor_sala_jantar_illumination changed
 then
-	logDebug("motion.rules", "movimento/iluminação - sala de jantar.");
+	logInfo("motion.rules", "movimento/iluminação - sala de jantar.");
 
 	var turnLightOn = false;
 	
@@ -86,7 +86,7 @@ when
     Item motion_sensor_quarto_pedro_motion changed or
 	Item motion_sensor_quarto_pedro_illumination changed
 then
-	logDebug("motion.rules", "movimento/iluminação - quarto do Pedro.");
+	logInfo("motion.rules", "movimento/iluminação - quarto do Pedro.");
 	
 	var turnLightOn = false;
 	
@@ -128,7 +128,7 @@ when
     Item motion_sensor_quarto_pequeno_motion changed or
 	Item motion_sensor_quarto_pequeno_illumination changed
 then
-	logDebug("motion.rules", "movimento/iluminação - quarto pequeno.");
+	logInfo("motion.rules", "movimento/iluminação - quarto pequeno.");
 	
 	var turnLightOn = shouldLightTurnOn.apply(hue_quarto_pequeno_switch, EnableLightOnMotion_QuartoPequeno, motion_sensor_quarto_pequeno_motion);
 	
@@ -161,7 +161,7 @@ when
     Item motion_sensor_sala_estar_motion changed or
 	Item motion_sensor_sala_estar_illumination changed
 then
-	logDebug("motion.rules", "movimento/iluminação - sala de Estar.");
+	logInfo("motion.rules", "movimento/iluminação - sala de Estar.");
 	
 	var turnLightOn = false;
 	

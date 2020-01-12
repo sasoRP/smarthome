@@ -16,13 +16,13 @@ val Functions$Function4<SwitchItem, SwitchItem, StringItem, Boolean, Void> handl
 			
 			if (enableToggleOnLightOff)
 			{
-				logDebug("switches.rules", "enabling automatic mode...");
+				logInfo("switches.rules", "enabling automatic mode...");
 				sendCommand(toggleLightOnMotion, ON);
 			}
 		}
 		else
 		{
-			logDebug("switches.rules", "disabling automatic mode...");
+			logInfo("switches.rules", "disabling automatic mode...");
 			sendCommand(toggleLightOnMotion, OFF);
 			sendCommand(lightBulbAlert, "SELECT");
 		}
@@ -70,7 +70,7 @@ then
     switch(actionName) {
 	
         case "SHORT_PRESSED": {
-			logDebug("switches.rules", "Short pressed switch_quarto_pedro");
+			logInfo("switches.rules", "Short pressed switch_quarto_pedro");
 			
 			if (now.getHourOfDay > 0 && now.getHourOfDay < 8)
 			{
@@ -83,12 +83,12 @@ then
         }
 		
         case "DOUBLE_PRESSED": {
-			logDebug("switches.rules", "Double pressed switch_quarto_pedro");
+			logInfo("switches.rules", "Double pressed switch_quarto_pedro");
 			handleDoublePress.apply(hue_quarto_pedro_switch, hue_quarto_pedro_brightness, hue_quarto_pedro_alert, EnableLightOnMotion_QuartoPedro);
         }
 		
         case "LONG_PRESSED": {
-			logDebug("switches.rules", "Long pressed switch_quarto_pedro");
+			logInfo("switches.rules", "Long pressed switch_quarto_pedro");
 			handleLongPress.apply(hue_quarto_pedro_brightness);
         }
 		
@@ -107,17 +107,17 @@ then
 	switch(actionName) {
 	
         case "SHORT_PRESSED": {
-			logDebug("switches.rules", "Short pressed switch_sala_jantar");
+			logInfo("switches.rules", "Short pressed switch_sala_jantar");
 			handleShortPress.apply(hue_sala_jantar_switch, EnableLightOnMotion_SalaDeJantar, hue_sala_jantar_alert, true);
         }
 		
         case "DOUBLE_PRESSED": {
-			logDebug("switches.rules", "Double pressed switch_sala_jantar");
+			logInfo("switches.rules", "Double pressed switch_sala_jantar");
 			handleDoublePress.apply(hue_sala_jantar_switch, hue_sala_jantar_brightness, hue_sala_jantar_alert, EnableLightOnMotion_SalaDeJantar);
         }
 		
         case "LONG_PRESSED": {
-			logDebug("switches.rules", "Long pressed switch_sala_jantar");
+			logInfo("switches.rules", "Long pressed switch_sala_jantar");
 			handleLongPress.apply(hue_sala_jantar_brightness);
         }
 		
@@ -136,17 +136,17 @@ then
     switch(actionName) {
 	
         case "SHORT_PRESSED": {
-			logDebug("switches.rules", "Short pressed switch_sala_estar");
+			logInfo("switches.rules", "Short pressed switch_sala_estar");
 			handleShortPress.apply(hue_sala_estar_switch, EnableLightOnMotion_SalaDeEstar, hue_sala_estar_alert, true);
         }
 		
         case "DOUBLE_PRESSED": {
-			logDebug("switches.rules", "Double pressed switch_sala_estar");
+			logInfo("switches.rules", "Double pressed switch_sala_estar");
 			handleDoublePress.apply(hue_sala_estar_switch, hue_sala_estar_brightness, hue_sala_estar_alert, EnableLightOnMotion_SalaDeEstar);
         }
 		
         case "LONG_PRESSED": {
-			logDebug("switches.rules", "Long pressed switch_sala_estar");
+			logInfo("switches.rules", "Long pressed switch_sala_estar");
 			handleLongPress.apply(hue_sala_estar_brightness);
         }
 		
@@ -165,17 +165,17 @@ then
     switch(actionName) {
 	
         case "SHORT_PRESSED": {
-			logDebug("switches.rules", "Short pressed switch_quarto_pequeno");
+			logInfo("switches.rules", "Short pressed switch_quarto_pequeno");
 			handleShortPress.apply(hue_quarto_pequeno_switch, EnableLightOnMotion_QuartoPequeno, hue_quarto_pequeno_alert, true);
         }
 		
         case "DOUBLE_PRESSED": {
-			logDebug("switches.rules", "Double pressed switch_quarto_pedro");
+			logInfo("switches.rules", "Double pressed switch_quarto_pedro");
 			handleDoublePress.apply(hue_quarto_pequeno_switch, hue_quarto_pequeno_brightness, hue_quarto_pequeno_alert, EnableLightOnMotion_QuartoPequeno);
         }
 		
         case "LONG_PRESSED": {
-			logDebug("switches.rules", "Long pressed switch_quarto_pequeno");
+			logInfo("switches.rules", "Long pressed switch_quarto_pequeno");
 			handleLongPress.apply(hue_quarto_pequeno_brightness);
         }
 		
