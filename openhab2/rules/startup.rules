@@ -2,25 +2,31 @@ rule "Init"
 when
 	System started
 then
-	motion_sensor_sala_estar_motionOffTimer.sendCommand(90);
-	motion_sensor_quarto_pedro_motionOffTimer.sendCommand(90);
-	motion_sensor_sala_jantar_motionOffTimer.sendCommand(90);
-	motion_sensor_quarto_pequeno_motionOffTimer.sendCommand(90);
-	
-	var sunSetStart = new DateTime(astro_sun_set_start.state.toString);
-	var sunRiseStart = new DateTime(astro_sun_rise_start.state.toString);
-	
-	if (now.isAfter(sunSetStart) && now.isBefore(sunRiseStart))
-	{
-		sendCommand(SunLight, ON);
+	motion_quarto_motionOffTimer.sendCommand(90);
+	motion_corredor1_motionOffTimer.sendCommand(70);
+	motion_corredor2_motionOffTimer.sendCommand(70);
+	motion_hall_motionOffTimer.sendCommand(90);
+	motion_sala_motionOffTimer.sendCommand(90);
+	motion_cozinha_motionOffTimer.sendCommand(90);
+	motion_lavandaria_motionOffTimer.sendCommand(90);
+
+	var sunSetStart = new DateTime(sun_set_start.state.toString);
+	var sunRiseStart = new DateTime(sun_rise_start.state.toString);
+
+	logInfo("startup.rules", "sunRiseStart: " + sunRiseStart);
+	logInfo("startup.rules", "sunSetStart: " + sunSetStart);
+
+	if (now.isAfter(sunRiseStart) && now.isBefore(sunSetStart)) {
+		logInfo("startup.rules", "sun_light is now ON");
+		sendCommand(sun_light, ON);
+	} else {
+		logInfo("startup.rules", "sun_light is now OFF");
+		sendCommand(sun_light, OFF);
 	}
-	else
-	{
-		sendCommand(SunLight, OFF);
-	}
 	
-	sendCommand(EnableLightOnMotion_QuartoPedro, ON);
-	sendCommand(EnableLightOnMotion_SalaDeJantar, ON);
-	sendCommand(EnableLightOnMotion_SalaDeEstar, ON);
-	sendCommand(EnableLightOnMotion_QuartoPequeno, ON);
+	sendCommand(motion_quarto_enabled, ON);
+	sendCommand(motion_corredor_enabled, ON);
+	sendCommand(motion_hall_enabled, ON);
+	sendCommand(motion_sala_enabled, ON);
+	sendCommand(motion_cozinha_enabled, ON);
 end

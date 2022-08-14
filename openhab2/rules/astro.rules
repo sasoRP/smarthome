@@ -3,7 +3,7 @@ when
     Channel 'astro:sun:local:rise#event' triggered START 
 then
 	logDebug("astro.rules", "Sunrise event.");
-	sendCommand(SunLight, ON);
+	sendCommand(sun_light, ON);
 end
 
 
@@ -12,5 +12,5 @@ when
     Channel 'astro:sun:local:set#event' triggered START 
 then
 	logDebug("astro.rules", "Sunset event.");
-    sendCommand(SunLight, OFF);
+    sendCommand(sun_light, OFF);
 end

@@ -2,10 +2,13 @@ rule "Enable Automatic Mode for Lights on Week Days"
 when
     Time cron "0 35 8 ? * MON-FRI *"
 then
-	sendCommand(EnableLightOnMotion_QuartoPedro, ON);
-	sendCommand(EnableLightOnMotion_SalaDeEstar, ON);
-	sendCommand(EnableLightOnMotion_SalaDeJantar, ON);
-	sendCommand(EnableLightOnMotion_QuartoPequeno, ON);
+	sendCommand(motion_quarto_enabled, ON);
+	sendCommand(motion_suite_enabled, ON);
+	sendCommand(motion_escritorio_enabled, ON);
+	sendCommand(motion_corredor_enabled, ON);
+	sendCommand(motion_hall_enabled, ON);
+	sendCommand(motion_sala_enabled, ON);
+	sendCommand(motion_cozinha_enabled, ON);
 	logDebug("time.rules", "Automatic mode - all lights ON.");
 end
 
@@ -14,9 +17,12 @@ rule "Enable Automatic Mode for Lights on Weekend"
 when
     Time cron "0 0 8 ? * SAT-SUN *"
 then
-	sendCommand(EnableLightOnMotion_SalaDeEstar, ON);
-	sendCommand(EnableLightOnMotion_SalaDeJantar, ON);
-	sendCommand(EnableLightOnMotion_QuartoPequeno, ON);
+	sendCommand(motion_suite_enabled, ON);
+	sendCommand(motion_escritorio_enabled, ON);
+	sendCommand(motion_corredor_enabled, ON);
+	sendCommand(motion_hall_enabled, ON);
+	sendCommand(motion_sala_enabled, ON);
+	sendCommand(motion_cozinha_enabled, ON);
 	logDebug("time.rules", "Automatic mode - salas ON.");
 end
 
@@ -25,6 +31,6 @@ rule "Enable Automatic Mode for Lights later on Weekend"
 when
     Time cron "0 0 12 ? * SAT-SUN *"
 then
-	logDebug("time.rules", "Automatic mode - quarto do pedro ON.");
-	sendCommand(EnableLightOnMotion_QuartoPedro, ON);
+	logDebug("time.rules", "Automatic mode - quarto ON.");
+	sendCommand(motion_quarto_enabled, ON);
 end
