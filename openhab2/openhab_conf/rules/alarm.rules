@@ -1,31 +1,16 @@
 rule "Movement Detected Sala de Jantar"
 when
-    Item motion_sensor_sala_jantar_motion changed to ON
+    Item motion_corredor1_status changed to ON or
+	Item motion_corredor2_status changed to ON or
+	Item motion_despensa_status changed to ON or
+	Item motion_cozinha_status changed to ON or
+	Item motion_lavandaria_status changed to ON or
+	Item motion_sala_status changed to ON or
+	Item motion_quarto_status changed to ON or
+	Item motion_hall_status changed to ON
 then
 	if (Motion_Alarm.state == ON)
 	{
-		sendBroadcastNotification("Movimento detectado - Sala de Jantar!");
-	}
-end
-
-
-rule "Movement Detected Sala de Estar"
-when
-	Item motion_sensor_sala_estar_motion changed to ON
-then
-	if (Motion_Alarm.state == ON)
-	{
-		sendBroadcastNotification("Movimento detectado - Sala de Estar!");
-	}
-end
-
-
-rule "Movement Detected Quarto do Pedro"
-when
-	Item motion_sensor_quarto_pedro_motion changed to ON
-then
-	if (Motion_Alarm.state == ON)
-	{
-		sendBroadcastNotification("Movimento detectado - Quarto do Pedro!");
+		sendBroadcastNotification("Movimento detectado em casa!");
 	}
 end

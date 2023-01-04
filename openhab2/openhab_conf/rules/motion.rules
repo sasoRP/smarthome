@@ -1,42 +1,30 @@
 val Functions$Function3<SwitchItem, SwitchItem, SwitchItem, Boolean> shouldLightTurnOn =  [SwitchItem lightBulb, SwitchItem switchLightOnMotion, SwitchItem switchMotionState |	
+	logInfo("motion.rules", "Running shouldLightTurnOn...");
 	
-	var canLightTurnOn = (lightBulb.state == OFF) &&
-						 (switchLightOnMotion.state == ON) &&
-						 (switchMotionState.state == ON);
+	return (lightBulb.state == OFF) &&
+	       (switchLightOnMotion.state == ON) &&
+               (switchMotionState.state == ON);
+]
 
-	var isAfterSunSet = (sun_light.state == OFF);
-	
-	var result = canLightTurnOn && isAfterSunSet;
-							 
-    if (result)
-	{
-		logDebug("motion.rules", "light should turn ON");
-	}
-	else
-	{
-		logDebug("motion.rules", "light should NOT turn ON");
-	}
-	
-	return result;
+
+val Functions$Function3<SwitchItem, SwitchItem, SwitchItem, Boolean> shouldLightTurnOnAfterSunSet =  [SwitchItem lightBulb, SwitchItem switchLightOnMotion, SwitchItem switchMotionState |	
+	logInfo("motion.rules", "Running shouldLightTurnOnAfterSunSet...");	
+
+	var isAfterSunSet  = (sun_light.state == OFF);
+        var canLightTurnOn = (lightBulb.state == OFF) &&
+                             (switchLightOnMotion.state == ON) &&
+                             (switchMotionState.state == ON);
+
+	return canLightTurnOn && isAfterSunSet;
 ]
 
 
 val Functions$Function3<SwitchItem, SwitchItem, SwitchItem, Boolean> shouldLightTurnOff =  [SwitchItem lightBulb, SwitchItem switchLightOnMotion, SwitchItem switchMotionState |
-							 
-	var shouldLightTurnOff = (switchLightOnMotion.state == ON) &&
-							 (lightBulb.state == ON) &&
-							 (switchMotionState.state == OFF);
-	
-	if (shouldLightTurnOff)
-	{
-		logDebug("motion.rules", "light should turn OFF");
-	}
-	else
-	{
-		logDebug("motion.rules", "light should NOT turn OFF");
-	}
-	
-	return shouldLightTurnOff;
+	logInfo("motion.rules", "Running shouldLightTurnOff...");						
+	 
+	return (switchLightOnMotion.state == ON) &&
+	       (lightBulb.state == ON) &&
+	       (switchMotionState.state == OFF);
 ]
 
 
@@ -51,24 +39,50 @@ then
 		turnLightOn = false;
 		logDebug("motion.rules", "Corredor illumination needs no lights.");
 	} else {
-		turnLightOn = shouldLightTurnOn.apply(luz_corredor_switch, motion_corredor_enabled, motion_corredor1_status) ||
-		              shouldLightTurnOn.apply(luz_corredor_switch, motion_corredor_enabled, motion_corredor2_status);
+		turnLightOn = shouldLightTurnOnAfterSunSet.apply(luz_corredor_mesa_switch, motion_corredor_enabled, motion_corredor1_status) ||
+		              shouldLightTurnOnAfterSunSet.apply(luz_corredor_mesa_switch, motion_corredor_enabled, motion_corredor2_status);
 	}
+	
 	
 	if (turnLightOn)
 	{
-		sendCommand(luz_corredor_switch, ON);
+		sendCommand(luz_corredor_mesa_switch, ON);
 	} else {
 		logDebug("motion.rules", "Corredor light will NOT turn ON.");
 	}
 
-	var turnLightOff = shouldLightTurnOff.apply(luz_corredor_switch, motion_corredor_enabled, motion_corredor1_status) &&
-					   shouldLightTurnOff.apply(luz_corredor_switch, motion_corredor_enabled, motion_corredor2_status);
+	var turnLightOff = shouldLightTurnOff.apply(luz_corredor_mesa_switch, motion_corredor_enabled, motion_corredor1_status) &&
+					   shouldLightTurnOff.apply(luz_corredor_mesa_switch, motion_corredor_enabled, motion_corredor2_status);
 	
 	if (turnLightOff)
 	{
 		logDebug("motion.rules", "sending OFF command to Corredor light");
-		sendCommand(luz_corredor_switch, OFF);
+		sendCommand(luz_corredor_mesa_switch, OFF);
+	}
+end
+
+
+rule "Motion Sensor - Despensa"
+when
+    Item motion_despensa_status changed
+then
+	var turnLightOn = false;
+	
+	turnLightOn = shouldLightTurnOn.apply(luz_despensa_switch, motion_despensa_enabled, motion_despensa_status);
+	
+	if (turnLightOn)
+	{
+		sendCommand(luz_despensa_switch, ON);
+	} else {
+		logDebug("motion.rules", "Despensa light will NOT turn ON.");
+	}
+
+	var turnLightOff = shouldLightTurnOff.apply(luz_despensa_switch, motion_despensa_enabled, motion_despensa_status)
+	
+	if (turnLightOff)
+	{
+		logDebug("motion.rules", "sending OFF command to Despensa light");
+		sendCommand(luz_despensa_switch, OFF);
 	}
 end
 
@@ -78,14 +92,32 @@ when
     Item motion_cozinha_status changed or
 	Item motion_lavandaria_status changed
 then
+	if (EnablePersianaOnMotion_Sala.state == ON)
+	{
+		logInfo("motion.rules", "Opening Persiana da Sala...");
+		sendCommand(persiana_sala_rollerPosition, 100);
+		sendCommand(EnablePersianaOnMotion_Sala, OFF);
+	} else {
+		logInfo("motion.rules", "Persiana da sala was already opened up today.");
+	}
+
+	if (EnablePersianaOnMotion_Cozinha.state == ON)
+	{
+		logInfo("motion.rules", "Opening Persiana da Cozinha...");
+		sendCommand(persiana_cozinha_rollerPosition, 100);
+		sendCommand(EnablePersianaOnMotion_Cozinha, OFF);
+	} else {
+		logInfo("motion.rules", "Persiana da cozinha was already opened up today.");
+	}
+
 	var turnLightOn = false;
 	
 	if (motion_cozinha_illumination.state > 40 || motion_lavandaria_illumination.state > 40) {
 		turnLightOn = false;
 		logDebug("motion.rules", "Cozinha illumination needs no lights.");
 	} else {
-		turnLightOn = shouldLightTurnOn.apply(luz_cozinha_switch, motion_cozinha_enabled, motion_cozinha_status) ||
-		              shouldLightTurnOn.apply(luz_cozinha_switch, motion_cozinha_enabled, motion_lavandaria_status);
+		turnLightOn = shouldLightTurnOnAfterSunSet.apply(luz_cozinha_switch, motion_cozinha_enabled, motion_cozinha_status) ||
+		              shouldLightTurnOnAfterSunSet.apply(luz_cozinha_switch, motion_cozinha_enabled, motion_lavandaria_status);
 	}
 	
 	if (turnLightOn)
@@ -110,18 +142,37 @@ rule "Motion Sensor - Sala"
 when
     Item motion_sala_status changed
 then
+	if (EnablePersianaOnMotion_Sala.state == ON)
+	{
+		logInfo("motion.rules", "Opening Persiana da Sala...");
+		sendCommand(persiana_sala_rollerPosition, 100);
+		sendCommand(EnablePersianaOnMotion_Sala, OFF);
+	} else {
+		logInfo("motion.rules", "Persiana da sala was already opened up today.");
+	}
+
+	if (EnablePersianaOnMotion_Cozinha.state == ON)
+	{
+		logInfo("motion.rules", "Opening Persiana da Cozinha...");
+		sendCommand(persiana_cozinha_rollerPosition, 100);
+		sendCommand(EnablePersianaOnMotion_Cozinha, OFF);
+	} else {
+		logInfo("motion.rules", "Persiana da cozinha was already opened up today.");
+	}
+
 	var turnLightOn = false;
 	
 	if (motion_sala_illumination.state > 40) {
 		turnLightOn = false;
 		logDebug("motion.rules", "Sala illumination needs no lights.");
 	} else {
-		turnLightOn = shouldLightTurnOn.apply(luz_sala_jantar_switch, motion_sala_enabled, motion_sala_status);
+		turnLightOn = shouldLightTurnOnAfterSunSet.apply(luz_sala_jantar_switch, motion_sala_enabled, motion_sala_status);
 	}
 	
 	if (turnLightOn)
 	{
 		sendCommand(luz_sala_jantar_switch, ON);
+		sendCommand(luz_sala_estar_switch, ON);
 	} else {
 		logDebug("motion.rules", "Sala light will NOT turn ON.");
 	}
@@ -132,6 +183,7 @@ then
 	{
 		logDebug("motion.rules", "sending OFF command to Sala light");
 		sendCommand(luz_sala_jantar_switch, OFF);
+		sendCommand(luz_sala_estar_switch, OFF);
 	}
 end
 
@@ -146,7 +198,7 @@ then
 		turnLightOn = false;
 		logDebug("motion.rules", "Quarto illumination needs no lights.");
 	} else {
-		turnLightOn = shouldLightTurnOn.apply(luz_quarto_switch, motion_quarto_enabled, motion_quarto_status);
+		turnLightOn = shouldLightTurnOnAfterSunSet.apply(luz_quarto_switch, motion_quarto_enabled, motion_quarto_status);
 	}
 	
 	if (turnLightOn)
@@ -170,27 +222,45 @@ rule "Motion Sensor - Hall"
 when
     Item motion_hall_status changed
 then
+	if (EnablePersianaOnMotion_Sala.state == ON)
+	{
+		logInfo("motion.rules", "Opening Persiana da Sala...");
+		sendCommand(persiana_sala_rollerPosition, 100);
+		sendCommand(EnablePersianaOnMotion_Sala, OFF);
+	} else {
+		logInfo("motion.rules", "Persiana da sala was already opened up today.");
+	}
+
+	if (EnablePersianaOnMotion_Cozinha.state == ON)
+	{
+		logInfo("motion.rules", "Opening Persiana da Cozinha...");
+		sendCommand(persiana_cozinha_rollerPosition, 100);
+		sendCommand(EnablePersianaOnMotion_Cozinha, OFF);
+	} else {
+		logInfo("motion.rules", "Persiana da cozinha was already opened up today.");
+	}
+
 	var turnLightOn = false;
 	
 	if (motion_hall_illumination.state > 40) {
 		turnLightOn = false;
 		logDebug("motion.rules", "Hall illumination needs no lights.");
 	} else {
-		turnLightOn = shouldLightTurnOn.apply(luz_hall_switch, motion_hall_enabled, motion_hall_status);
+		turnLightOn = shouldLightTurnOnAfterSunSet.apply(luz_hall_mesa_switch, motion_hall_enabled, motion_hall_status);
 	}
 	
 	if (turnLightOn)
 	{
-		sendCommand(luz_hall_switch, ON);
+		sendCommand(luz_hall_mesa_switch, ON);
 	} else {
 		logDebug("motion.rules", "Hall light will NOT turn ON.");
 	}
 
-	var turnLightOff = shouldLightTurnOff.apply(luz_hall_switch, motion_hall_enabled, motion_hall_status)
+	var turnLightOff = shouldLightTurnOff.apply(luz_hall_mesa_switch, motion_hall_enabled, motion_hall_status)
 	
 	if (turnLightOff)
 	{
 		logDebug("motion.rules", "sending OFF command to Hall light");
-		sendCommand(luz_hall_switch, OFF);
+		sendCommand(luz_hall_mesa_switch, OFF);
 	}
 end

@@ -3,8 +3,6 @@ when
     Time cron "0 35 8 ? * MON-FRI *"
 then
 	sendCommand(motion_quarto_enabled, ON);
-	sendCommand(motion_suite_enabled, ON);
-	sendCommand(motion_escritorio_enabled, ON);
 	sendCommand(motion_corredor_enabled, ON);
 	sendCommand(motion_hall_enabled, ON);
 	sendCommand(motion_sala_enabled, ON);
@@ -17,8 +15,6 @@ rule "Enable Automatic Mode for Lights on Weekend"
 when
     Time cron "0 0 8 ? * SAT-SUN *"
 then
-	sendCommand(motion_suite_enabled, ON);
-	sendCommand(motion_escritorio_enabled, ON);
 	sendCommand(motion_corredor_enabled, ON);
 	sendCommand(motion_hall_enabled, ON);
 	sendCommand(motion_sala_enabled, ON);
@@ -34,3 +30,17 @@ then
 	logDebug("time.rules", "Automatic mode - quarto ON.");
 	sendCommand(motion_quarto_enabled, ON);
 end
+
+
+rule "Reset persianas already opened this morning switches"
+when
+    Time cron "0 0 6 * * ?"
+then
+	logInfo("time.rules", "Resetting enable persianas on motion.");
+	sendCommand(EnablePersianaOnMotion_Sala, ON);
+	sendCommand(EnablePersianaOnMotion_Cozinha, ON);
+	sendCommand(EnablePersianaOnMotion_Escritorio, ON);
+	sendCommand(EnablePersianaOnMotion_Suite, ON);
+	sendCommand(EnablePersianaOnMotion_Quarto, ON);
+end
+

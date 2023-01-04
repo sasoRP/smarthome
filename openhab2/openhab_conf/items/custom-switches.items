@@ -1,12 +1,16 @@
 Switch Motion_Alarm "Alarme de casa" <switch> [ "Switchable" ]
 
-Switch EnableLightOnMotion_SalaDeEstar "Detector de Movimento da sala de estar" <switch> [ "Switchable" ]
-Switch EnableLightOnMotion_QuartoPedro "Detector de Movimento do quarto do Pedro" <switch> [ "Switchable" ]
-Switch EnableLightOnMotion_SalaDeJantar "Detector de Movimento do sala de jantar" <switch> [ "Switchable" ]
-Switch EnableLightOnMotion_QuartoPequeno "Detector de Movimento do quarto pequeno" <switch> [ "Switchable" ]
+Switch motion_corredor_enabled "Detector de Movimento da sala do corredor" <switch> [ "Switchable" ]
+Switch motion_despensa_enabled "Detector de Movimento da despensa" <switch> [ "Switchable" ]
+Switch motion_cozinha_enabled "Detector de Movimento da cozinha" <switch> [ "Switchable" ]
+Switch motion_sala_enabled "Detector de Movimento da sala" <switch> [ "Switchable" ]
+Switch motion_quarto_enabled "Detector de Movimento do quarto" <switch> [ "Switchable" ]
+Switch motion_hall_enabled "Detector de Movimento do hall" <switch> [ "Switchable" ]
+
+Switch EnablePersianaOnMotion_Sala "Abrir a persiana da sala quando for detectado movimento?" <switch> [ "Switchable" ]
+Switch EnablePersianaOnMotion_Cozinha "Abrir a persiana da cozinha quando for detectado movimento??" <switch> [ "Switchable" ]
+Switch EnablePersianaOnMotion_Escritorio "Abrir a persiana do escritório quando for detectado movimento?" <switch> [ "Switchable" ]
+Switch EnablePersianaOnMotion_Suite "Abrir a persiana da suite quando for detectado movimento?" <switch> [ "Switchable" ]
+Switch EnablePersianaOnMotion_Quarto "Abrir a persiana do quarto quando for detectado movimento?" <switch> [ "Switchable" ]
 
 Switch SunLight "Luz solar" <switch> [ "Switchable" ]
-
-Number Temperatura_Cozinha "Temperatura da Cozinha" [ "CurrentTemperature" ]
-Number Temperatura_QuartoDosPais "Temperatura do quarto dos pais" [ "CurrentTemperature" ]
-Number Temperatura_SalaDeJantar "Temperatura da sala de jantar" [ "CurrentTemperature" ]

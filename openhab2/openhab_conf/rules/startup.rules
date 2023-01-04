@@ -2,19 +2,17 @@ rule "Init"
 when
 	System started
 then
-	motion_quarto_motionOffTimer.sendCommand(90);
+	motion_quarto_motionOffTimer.sendCommand(70);
 	motion_corredor1_motionOffTimer.sendCommand(70);
 	motion_corredor2_motionOffTimer.sendCommand(70);
-	motion_hall_motionOffTimer.sendCommand(90);
-	motion_sala_motionOffTimer.sendCommand(90);
-	motion_cozinha_motionOffTimer.sendCommand(90);
-	motion_lavandaria_motionOffTimer.sendCommand(90);
+	motion_despensa_motionOffTimer.sendCommand(70);
+	motion_hall_motionOffTimer.sendCommand(70);
+	motion_sala_motionOffTimer.sendCommand(70);
+	motion_cozinha_motionOffTimer.sendCommand(120);
+	motion_lavandaria_motionOffTimer.sendCommand(120);
 
 	var sunSetStart = new DateTime(sun_set_start.state.toString);
 	var sunRiseStart = new DateTime(sun_rise_start.state.toString);
-
-	logInfo("startup.rules", "sunRiseStart: " + sunRiseStart);
-	logInfo("startup.rules", "sunSetStart: " + sunSetStart);
 
 	if (now.isAfter(sunRiseStart) && now.isBefore(sunSetStart)) {
 		logInfo("startup.rules", "sun_light is now ON");
@@ -24,9 +22,17 @@ then
 		sendCommand(sun_light, OFF);
 	}
 	
+	sendCommand(motion_despensa_enabled, ON);
 	sendCommand(motion_quarto_enabled, ON);
 	sendCommand(motion_corredor_enabled, ON);
 	sendCommand(motion_hall_enabled, ON);
 	sendCommand(motion_sala_enabled, ON);
 	sendCommand(motion_cozinha_enabled, ON);
+
+	sendCommand(EnablePersianaOnMotion_Sala, OFF);
+	sendCommand(EnablePersianaOnMotion_Cozinha, OFF);
+	sendCommand(EnablePersianaOnMotion_Escritorio, OFF);
+	sendCommand(EnablePersianaOnMotion_Suite, OFF);
+	sendCommand(EnablePersianaOnMotion_Quarto, OFF);
+	
 end

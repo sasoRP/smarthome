@@ -43,11 +43,17 @@ val Functions$Function4<SwitchItem, DimmerItem, StringItem, SwitchItem, Void> ha
 	
 	if (shouldDisableMotionControl)
 	{
-		sendCommand(lightBulbAlert, "SELECT");
+		if (lightBulbAlert !== null) {
+			sendCommand(lightBulbAlert, "SELECT");
+		} else {
+			sendCommand(lightBulbSwitch, ON);
+			sendCommand(lightBulbSwitch, OFF);
+		}
+		
 		sendCommand(toggleLightOnMotion, OFF);
 	}
 	
-	if (shouldSetMaxBrightness)
+	if (shouldSetMaxBrightness && lightBulbDimmer !== null)
 	{
 		lightBulbDimmer.sendCommand(100);
 	}
@@ -64,7 +70,6 @@ val Functions$Function1<DimmerItem, Void> handleLongPress =  [DimmerItem lightBu
 	
 	lightBulbDimmer.sendCommand(newBrightness);
 ]
-
 
 
 rule "Luz - Quarto"
@@ -100,32 +105,28 @@ then
 end
 
 
-rule "Luz - Sala de Jantar"
+rule "Luz - Sala"
 when
-    Channel "mihome:sensor_switch:286c07fa28af:158d00019dcc92:button" triggered or
-	Channel "mihome:sensor_switch:286c07fa28af:158d00019de580:button" triggered
+	Channel "mihome:sensor_switch:286c07fa28af:158d00019de580:button" triggered or 
+	Channel "mihome:sensor_switch:286c07fa28af:158d00019dcc92:button" triggered
 then
     var actionName = receivedEvent.getEvent()
 	
     switch(actionName) {
 	
         case "SHORT_PRESSED": {
-			if (now.getHourOfDay > 0 && now.getHourOfDay < 8)
-			{
-				handleShortPress.apply(luz_sala_jantar_switch, motion_sala_enabled, luz_sala_jantar_alert, false);
-			}
-			else
-			{
-				handleShortPress.apply(luz_sala_jantar_switch, motion_sala_enabled, luz_sala_jantar_alert, true);
-			}
+			handleShortPress.apply(luz_sala_jantar_switch, motion_sala_enabled, luz_sala_jantar_alert, false);
+			handleShortPress.apply(luz_sala_estar_switch, motion_sala_enabled, luz_sala_estar_alert, true);
         }
 		
         case "DOUBLE_PRESSED": {
 			handleDoublePress.apply(luz_sala_jantar_switch, luz_sala_jantar_brightness, luz_sala_jantar_alert, motion_sala_enabled);
+			handleDoublePress.apply(luz_sala_estar_switch, luz_sala_estar_brightness, luz_sala_estar_alert, motion_sala_enabled);
         }
 		
         case "LONG_PRESSED": {
 			handleLongPress.apply(luz_sala_jantar_brightness);
+			handleLongPress.apply(luz_sala_estar_brightness);
         }
 		
         case "LONG_RELEASED": {
@@ -143,14 +144,67 @@ then
     switch(actionName) {
 	
         case "SHORT_PRESSED": {
-			if (now.getHourOfDay > 0 && now.getHourOfDay < 8)
-			{
-				handleShortPress.apply(luz_cozinha_switch, motion_cozinha_enabled, null, false);
-			}
-			else
-			{
-				handleShortPress.apply(luz_cozinha_switch, motion_cozinha_enabled, null, true);
-			}
+			handleShortPress.apply(luz_cozinha_switch, motion_cozinha_enabled, null, true);
+        }
+
+		case "DOUBLE_PRESSED": {
+			handleDoublePress.apply(luz_cozinha_switch, null, null, motion_cozinha_enabled);
+        }
+		
+        case "LONG_RELEASED": {
+        }
+    }
+end
+
+
+rule "Luz - Hall Mesa"
+when
+	Channel "mihome:sensor_switch:286c07fa28af:158d00083a0508:button" triggered
+then
+    var actionName = receivedEvent.getEvent()
+	
+    switch(actionName) {
+	
+        case "SHORT_PRESSED": {
+			handleShortPress.apply(luz_hall_mesa_switch, motion_hall_enabled, null, true);
+        }
+    }
+end
+
+
+rule "Luz - Corredor Mesa"
+when
+	Channel "mihome:sensor_switch:286c07fa28af:158d000839972e:button" triggered
+then
+    var actionName = receivedEvent.getEvent()
+	
+    switch(actionName) {
+	
+        case "SHORT_PRESSED": {
+			handleShortPress.apply(luz_corredor_mesa_switch, motion_corredor_enabled, null, true);
+        }
+    }
+end
+
+
+rule "Luz - Suite 2"
+when
+	Channel "mihome:sensor_switch:286c07fa28af:158d000836b987:button" triggered
+then
+    var actionName = receivedEvent.getEvent()
+	
+    switch(actionName) {
+	
+        case "SHORT_PRESSED": {
+			handleShortPress.apply(luz_suite_2_switch, motion_suite_enabled, null, true);
+        }
+		
+        case "DOUBLE_PRESSED": {
+			handleDoublePress.apply(luz_suite_2_switch, luz_suite_2_brightness, luz_suite_2_alert, null);
+        }
+		
+        case "LONG_PRESSED": {
+			handleLongPress.apply(luz_suite_2_brightness);
         }
 		
         case "LONG_RELEASED": {
