@@ -193,3 +193,71 @@ then
 		sendCommand(hue_sala_estar_switch, OFF);
 	}
 end
+
+
+rule "Motion Sensor - Corredor 1"
+when
+    Item motion_sensor_corredor_1_motion changed
+then
+	logInfo("motion.rules", "movimento - corredor 2");
+
+	var turnLightOn = shouldLightTurnOn.apply(hue_sala_jantar_switch, EnableLightOnMotion_SalaDeJantar, motion_sensor_corredor_1_motion) &&
+					  (now.getHourOfDay() > 1 && now.getHourOfDay() < 8);
+	
+	if (turnLightOn)
+	{
+		logDebug("motion.rules", "sending ON command to Hue - Sala de Jantar");
+		sendCommand(hue_sala_jantar_switch, ON);
+		
+		if ((hue_sala_jantar_brightness.state as DecimalType) < 100)
+		{
+			hue_sala_jantar_brightness.sendCommand(100);
+		}
+	} else {
+		logDebug("motion.rules", "Sala de Jantar light will NOT turn ON.");
+	}
+
+	var turnLightOff = shouldLightTurnOff.apply(hue_sala_jantar_switch, EnableLightOnMotion_SalaDeJantar, motion_sensor_corredor_1_motion) &&
+					   (motion_sensor_corredor_2_motion.state == OFF) &&
+					   (motion_sensor_sala_jantar_motion.state == OFF);
+	
+	if (turnLightOff)
+	{
+		logDebug("motion.rules", "sending OFF command to Hue - Sala de Jantar");
+		sendCommand(hue_sala_jantar_switch, OFF);
+	}
+end
+
+
+rule "Motion Sensor - Corredor 2"
+when
+    Item motion_sensor_corredor_2_motion changed
+then
+	logInfo("motion.rules", "movimento - corredor 2");
+
+	var turnLightOn = shouldLightTurnOn.apply(hue_sala_jantar_switch, EnableLightOnMotion_SalaDeJantar, motion_sensor_corredor_2_motion) &&
+					  (now.getHourOfDay() > 1 && now.getHourOfDay() < 8);
+	
+	if (turnLightOn)
+	{
+		logDebug("motion.rules", "sending ON command to Hue - Sala de Jantar");
+		sendCommand(hue_sala_jantar_switch, ON);
+		
+		if ((hue_sala_jantar_brightness.state as DecimalType) < 100)
+		{
+			hue_sala_jantar_brightness.sendCommand(100);
+		}
+	} else {
+		logDebug("motion.rules", "Sala de Jantar light will NOT turn ON.");
+	}
+
+	var turnLightOff = shouldLightTurnOff.apply(hue_sala_jantar_switch, EnableLightOnMotion_SalaDeJantar, motion_sensor_corredor_2_motion) &&
+					   (motion_sensor_corredor_1_motion.state == OFF) &&
+					   (motion_sensor_sala_jantar_motion.state == OFF);
+	
+	if (turnLightOff)
+	{
+		logDebug("motion.rules", "sending OFF command to Hue - Sala de Jantar");
+		sendCommand(hue_sala_jantar_switch, OFF);
+	}
+end
