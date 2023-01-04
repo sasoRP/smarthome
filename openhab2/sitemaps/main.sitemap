@@ -1,0 +1,49 @@
+sitemap main label="Casa" {
+	
+	Frame label="Sala de Estar" {
+		Switch item=hue_sala_estar_switch label="Luz" icon="light"
+		Switch item=EnableLightOnMotion_SalaDeEstar label="Sensor de Movimento"
+		Text item=motion_sensor_sala_estar_illumination label="Luz Ambiente"
+		Text item=motion_sensor_sala_estar_lastMotion label="Último Movimento"
+		Text item=motion_sensor_sala_estar_motion label="Movimento"
+	}
+
+	Frame label="Quarto dos Pais" {
+		Switch item=hue_quarto_pais_switch label="Luz" icon="light"
+		Text item=thermometer_quarto_pais_temperature label="Temperatura"
+		Text item=thermometer_quarto_pais_humidity label="Humidade"
+	}
+
+	Frame label="Quarto do Pedro" {
+		Switch item=hue_quarto_pedro_switch label="Luz" icon="light"
+		Switch item=EnableLightOnMotion_QuartoPedro label="Sensor de Movimento"
+		Text item=motion_sensor_quarto_pedro_illumination label="Luz Ambiente"
+		Text item=motion_sensor_quarto_pedro_lastMotion label="Último Movimento"
+		Text item=motion_sensor_quarto_pedro_motion label="Movimento"
+	}
+
+	Frame label="Quarto Pequeno" {
+		Switch item=hue_quarto_pequeno_switch label="Luz" icon="light"
+		Switch item=EnableLightOnMotion_QuartoPequeno label="Sensor de Movimento"
+		Text item=motion_sensor_quarto_pequeno_illumination label="Luz Ambiente"
+		Text item=motion_sensor_quarto_pequeno_lastMotion label="Último Movimento"
+		Text item=motion_sensor_quarto_pequeno_motion label="Movimento"
+	}
+
+	Frame label="Sala de Jantar" {
+		Switch item=hue_sala_jantar_switch label="Luz" icon="light"
+		Switch item=EnableLightOnMotion_SalaDeJantar label="Sensor de Movimento"
+		Text item=thermometer_sala_jantar_temperature label="Temperatura"
+		Text item=thermometer_sala_jantar_humidity label="Humidade"
+		Text item=motion_sensor_sala_jantar_illumination label="Luz Ambiente"
+		Text item=motion_sensor_sala_jantar_lastMotion label="Último Movimento"
+		Text item=motion_sensor_sala_jantar_motion label="Movimento"
+	}
+
+	Frame label="Cozinha" {
+		Text item=thermometer_cozinha_temperature label="Temperatura"
+		Text item=thermometer_cozinha_humidity label="Humidade"
+	}
+}
+
+// vim: syntax=Xtend
