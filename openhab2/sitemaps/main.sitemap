@@ -6,6 +6,8 @@ sitemap main label="Casa" {
 		Text item=motion_sensor_sala_estar_illumination label="Luz Ambiente"
 		Text item=motion_sensor_sala_estar_lastMotion label="Último Movimento"
 		Text item=motion_sensor_sala_estar_motion label="Movimento"
+		Text item=thermometer_sala_estar_temperature label="Temperatura"
+		Text item=thermometer_sala_estar_humidity label="Humidade"
 	}
 
 	Frame label="Quarto dos Pais" {
@@ -20,6 +22,8 @@ sitemap main label="Casa" {
 		Text item=motion_sensor_quarto_pedro_illumination label="Luz Ambiente"
 		Text item=motion_sensor_quarto_pedro_lastMotion label="Último Movimento"
 		Text item=motion_sensor_quarto_pedro_motion label="Movimento"
+		Text item=thermometer_quarto_pedro_temperature label="Temperatura"
+		Text item=thermometer_quarto_pedro_humidity label="Humidade"
 	}
 
 	Frame label="Quarto Pequeno" {
@@ -33,11 +37,11 @@ sitemap main label="Casa" {
 	Frame label="Sala de Jantar" {
 		Switch item=hue_sala_jantar_switch label="Luz" icon="light"
 		Switch item=EnableLightOnMotion_SalaDeJantar label="Sensor de Movimento"
-		Text item=thermometer_sala_jantar_temperature label="Temperatura"
-		Text item=thermometer_sala_jantar_humidity label="Humidade"
 		Text item=motion_sensor_sala_jantar_illumination label="Luz Ambiente"
 		Text item=motion_sensor_sala_jantar_lastMotion label="Último Movimento"
 		Text item=motion_sensor_sala_jantar_motion label="Movimento"
+		Text item=thermometer_sala_jantar_temperature label="Temperatura"
+		Text item=thermometer_sala_jantar_humidity label="Humidade"
 	}
 
 	Frame label="Cozinha" {
