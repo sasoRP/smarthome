@@ -2,15 +2,18 @@ rule "Init"
 when
 	System started
 then
+	logInfo("startup.rules", "Setting motionOffTimers on motion sensors...")
 	motion_quarto_motionOffTimer.sendCommand(70);
 	motion_corredor1_motionOffTimer.sendCommand(70);
 	motion_corredor2_motionOffTimer.sendCommand(70);
 	motion_despensa_motionOffTimer.sendCommand(70);
+	// motion_escritorio_motionOffTimer.sendCommand(70);
 	motion_hall_motionOffTimer.sendCommand(70);
 	motion_sala_motionOffTimer.sendCommand(70);
 	motion_cozinha_motionOffTimer.sendCommand(120);
 	motion_lavandaria_motionOffTimer.sendCommand(120);
 
+	logInfo("startup.rules", "Setting sun_light status...")
 	var sunSetStart = new DateTime(sun_set_start.state.toString);
 	var sunRiseStart = new DateTime(sun_rise_start.state.toString);
 
@@ -22,13 +25,16 @@ then
 		sendCommand(sun_light, OFF);
 	}
 	
+	logInfo("startup.rules", "Enabling motion sensors by default...")
 	sendCommand(motion_despensa_enabled, ON);
 	sendCommand(motion_quarto_enabled, ON);
 	sendCommand(motion_corredor_enabled, ON);
+	sendCommand(motion_escritorio_enabled, ON);
 	sendCommand(motion_hall_enabled, ON);
 	sendCommand(motion_sala_enabled, ON);
 	sendCommand(motion_cozinha_enabled, ON);
 
+	logInfo("startup.rules", "Disabling PersianaOnMotion by default...")
 	sendCommand(EnablePersianaOnMotion_Sala, OFF);
 	sendCommand(EnablePersianaOnMotion_Cozinha, OFF);
 	sendCommand(EnablePersianaOnMotion_Escritorio, OFF);

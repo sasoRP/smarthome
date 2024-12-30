@@ -71,40 +71,6 @@ val Functions$Function1<DimmerItem, Void> handleLongPress =  [DimmerItem lightBu
 	lightBulbDimmer.sendCommand(newBrightness);
 ]
 
-
-rule "Luz - Quarto"
-when
-    Channel "mihome:sensor_switch:286c07fa28af:158d00019dcdda:button" triggered
-then
-    var actionName = receivedEvent.getEvent()
-	
-    switch(actionName) {
-	
-        case "SHORT_PRESSED": {
-			if (now.getHourOfDay > 0 && now.getHourOfDay < 8)
-			{
-				handleShortPress.apply(luz_quarto_switch, motion_quarto_enabled, luz_quarto_alert, false);
-			}
-			else
-			{
-				handleShortPress.apply(luz_quarto_switch, motion_quarto_enabled, luz_quarto_alert, true);
-			}
-        }
-		
-        case "DOUBLE_PRESSED": {
-			handleDoublePress.apply(luz_quarto_switch, luz_quarto_brightness, luz_quarto_alert, motion_quarto_enabled);
-        }
-		
-        case "LONG_PRESSED": {
-			handleLongPress.apply(luz_quarto_brightness);
-        }
-		
-        case "LONG_RELEASED": {
-        }
-    }
-end
-
-
 rule "Luz - Sala"
 when
 	Channel "mihome:sensor_switch:286c07fa28af:158d00019de580:button" triggered or 
@@ -157,37 +123,36 @@ then
 end
 
 
-rule "Luz - Hall Mesa"
-when
-	Channel "mihome:sensor_switch:286c07fa28af:158d00083a0508:button" triggered
-then
-    var actionName = receivedEvent.getEvent()
-	
-    switch(actionName) {
-	
-        case "SHORT_PRESSED": {
-			handleShortPress.apply(luz_hall_mesa_switch, motion_hall_enabled, null, true);
-        }
-    }
-end
-
-
-rule "Luz - Corredor Mesa"
+rule "Luz - Quarto"
 when
 	Channel "mihome:sensor_switch:286c07fa28af:158d000839972e:button" triggered
 then
     var actionName = receivedEvent.getEvent()
 	
-    switch(actionName) {
+	switch(actionName) {
 	
         case "SHORT_PRESSED": {
-			handleShortPress.apply(luz_corredor_mesa_switch, motion_corredor_enabled, null, true);
+			if (now.getHourOfDay > 0 && now.getHourOfDay < 8)
+			{
+				handleShortPress.apply(luz_quarto_switch, motion_quarto_enabled, null, false);
+			}
+			else
+			{
+				handleShortPress.apply(luz_quarto_switch, motion_quarto_enabled, null, true);
+			}
+        }
+
+		case "DOUBLE_PRESSED": {
+			handleDoublePress.apply(luz_quarto_switch, null, null, motion_quarto_enabled);
+        }
+		
+        case "LONG_RELEASED": {
         }
     }
 end
 
 
-rule "Luz - Suite 2"
+rule "Luz - Mesa do Corredor"
 when
 	Channel "mihome:sensor_switch:286c07fa28af:158d000836b987:button" triggered
 then
@@ -196,15 +161,15 @@ then
     switch(actionName) {
 	
         case "SHORT_PRESSED": {
-			handleShortPress.apply(luz_suite_2_switch, motion_suite_enabled, null, true);
+			handleShortPress.apply(luz_corredor_mesa_switch, motion_corredor_enabled, null, true);
         }
 		
         case "DOUBLE_PRESSED": {
-			handleDoublePress.apply(luz_suite_2_switch, luz_suite_2_brightness, luz_suite_2_alert, null);
+			handleDoublePress.apply(luz_corredor_mesa_switch, luz_corredor_mesa_brightness, luz_corredor_mesa_alert, null);
         }
 		
         case "LONG_PRESSED": {
-			handleLongPress.apply(luz_suite_2_brightness);
+			handleLongPress.apply(luz_corredor_mesa_brightness);
         }
 		
         case "LONG_RELEASED": {

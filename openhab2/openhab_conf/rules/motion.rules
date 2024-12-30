@@ -3,7 +3,7 @@ val Functions$Function3<SwitchItem, SwitchItem, SwitchItem, Boolean> shouldLight
 	
 	return (lightBulb.state == OFF) &&
 	       (switchLightOnMotion.state == ON) &&
-               (switchMotionState.state == ON);
+           (switchMotionState.state == ON);
 ]
 
 
@@ -33,6 +33,8 @@ when
     Item motion_corredor1_status changed or
 	Item motion_corredor2_status changed
 then
+	logDebug("motion.rules", "corredor motion triggered");
+
 	var turnLightOn = false;
 	
 	if (motion_corredor1_illumination.state > 40 || motion_corredor2_illumination.state > 40) {
@@ -66,12 +68,14 @@ rule "Motion Sensor - Despensa"
 when
     Item motion_despensa_status changed
 then
-	var turnLightOn = false;
+	logDebug("motion.rules", "despensa motion triggered");
 	
+	var turnLightOn = false;
 	turnLightOn = shouldLightTurnOn.apply(luz_despensa_switch, motion_despensa_enabled, motion_despensa_status);
 	
 	if (turnLightOn)
 	{
+		logDebug("motion.rules", "Despensa light will turn ON.");
 		sendCommand(luz_despensa_switch, ON);
 	} else {
 		logDebug("motion.rules", "Despensa light will NOT turn ON.");
@@ -92,6 +96,8 @@ when
     Item motion_cozinha_status changed or
 	Item motion_lavandaria_status changed
 then
+	logDebug("motion.rules", "cozinha motion triggered");
+	
 	if (EnablePersianaOnMotion_Sala.state == ON)
 	{
 		logInfo("motion.rules", "Opening Persiana da Sala...");
@@ -142,6 +148,8 @@ rule "Motion Sensor - Sala"
 when
     Item motion_sala_status changed
 then
+	logDebug("motion.rules", "sala motion triggered");
+
 	if (EnablePersianaOnMotion_Sala.state == ON)
 	{
 		logInfo("motion.rules", "Opening Persiana da Sala...");
@@ -192,6 +200,8 @@ rule "Motion Sensor - Quarto"
 when
     Item motion_quarto_status changed
 then
+	logDebug("motion.rules", "quarto motion triggered");
+
 	var turnLightOn = false;
 	
 	if (motion_quarto_illumination.state > 40) {
@@ -222,6 +232,8 @@ rule "Motion Sensor - Hall"
 when
     Item motion_hall_status changed
 then
+	logDebug("motion.rules", "hall motion triggered");
+
 	if (EnablePersianaOnMotion_Sala.state == ON)
 	{
 		logInfo("motion.rules", "Opening Persiana da Sala...");
@@ -246,21 +258,21 @@ then
 		turnLightOn = false;
 		logDebug("motion.rules", "Hall illumination needs no lights.");
 	} else {
-		turnLightOn = shouldLightTurnOnAfterSunSet.apply(luz_hall_mesa_switch, motion_hall_enabled, motion_hall_status);
+		turnLightOn = shouldLightTurnOnAfterSunSet.apply(luz_hall_switch, motion_hall_enabled, motion_hall_status);
 	}
 	
 	if (turnLightOn)
 	{
-		sendCommand(luz_hall_mesa_switch, ON);
+		sendCommand(luz_hall_switch, ON);
 	} else {
 		logDebug("motion.rules", "Hall light will NOT turn ON.");
 	}
 
-	var turnLightOff = shouldLightTurnOff.apply(luz_hall_mesa_switch, motion_hall_enabled, motion_hall_status)
+	var turnLightOff = shouldLightTurnOff.apply(luz_hall_switch, motion_hall_enabled, motion_hall_status)
 	
 	if (turnLightOff)
 	{
 		logDebug("motion.rules", "sending OFF command to Hall light");
-		sendCommand(luz_hall_mesa_switch, OFF);
+		sendCommand(luz_hall_switch, OFF);
 	}
 end
